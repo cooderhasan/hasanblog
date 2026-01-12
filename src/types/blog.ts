@@ -1,5 +1,6 @@
 // Blog post type definition
 export interface BlogPost {
+  id: string;
   slug: string;
   title: string;
   date: string;

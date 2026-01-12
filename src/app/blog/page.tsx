@@ -1,134 +1,120 @@
 import Link from 'next/link';
-import BlogCard from '@/components/BlogCard';
-import { getAllPosts, getAllCategories } from '@/lib/blog';
+import BlogListItem from '@/components/BlogListItem';
+import Sidebar from '@/components/Sidebar';
+import Breadcrumb from '@/components/Breadcrumb';
+import { getPosts, getRecentPosts } from '@/lib/blog';
 
 export const metadata = {
-    title: 'Blog',
+    title: 'Blog - Tüm Yazılar',
     description: 'E-ticaret, SEO ve dijital pazarlama hakkında yazılar',
 };
 
-export default function BlogPage({
+export default async function BlogPage({
     searchParams,
 }: {
-    searchParams: { category?: string };
+    searchParams: { page?: string };
 }) {
-    const allPosts = getAllPosts();
-    const categories = getAllCategories();
-    const selectedCategory = searchParams.category;
+    const page = Number(searchParams.page) || 1;
+    const limit = 10; // Show 10 posts per page to match sidebar height
 
-    // Filter by category if selected
-    const filteredPosts = selectedCategory
-        ? allPosts.filter(post => post.category.toLowerCase() === selectedCategory.toLowerCase())
-        : allPosts;
+    // Fetch posts with pagination
+    const { posts, totalPages, totalPosts } = await getPosts({
+        page,
+        limit,
+        // No category filter here, this is the "All Posts" page
+    });
+
+    // Fetch recent posts for sidebar
+    const recentPostsForSidebar = await getRecentPosts(5);
 
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+            <div className="bg-blue-900 text-white py-12">
                 <div className="container mx-auto px-4">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
-                    <p className="text-xl text-blue-100">
-                        E-ticaret, SEO ve dijital pazarlama hakkında en güncel içerikler
+                    <div className="mb-4">
+                        <Breadcrumb items={[
+                            { label: 'Ana Sayfa', href: '/' },
+                            { label: 'Blog', href: '/blog' },
+                        ]} />
+                    </div>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                        Blog
+                    </h1>
+                    <p className="text-blue-200">
+                        E-ticaret, SEO ve dijital pazarlama hakkında en güncel {totalPosts} içerik
                     </p>
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-12">
-                <div className="flex flex-col lg:flex-row gap-8">
+            <div className="container mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
-                    <div className="flex-1">
-                        {/* Category Filter */}
-                        <div className="mb-8">
-                            <div className="flex flex-wrap gap-3">
-                                <Link
-                                    href="/blog"
-                                    className={`px-4 py-2 rounded-full font-medium transition-colors ${!selectedCategory
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-white text-gray-700 hover:bg-gray-100'
-                                        }`}
-                                >
-                                    Tümü ({allPosts.length})
-                                </Link>
-                                {categories.map((category) => {
-                                    const count = allPosts.filter(
-                                        (p) => p.category.toLowerCase() === category.toLowerCase()
-                                    ).length;
+                    <div className="lg:col-span-2">
+
+                        {/* Posts List */}
+                        <div className="flex flex-col gap-6">
+                            {posts.length > 0 ? (
+                                posts.map((post) => (
+                                    <BlogListItem key={post.slug} post={post} />
+                                ))
+                            ) : (
+                                <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                                    <p className="text-gray-600 text-lg mb-4">
+                                        Henüz yazı bulunmamaktadır.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="mt-8 flex justify-center gap-2">
+                                {/* Previous Page */}
+                                {page > 1 && (
+                                    <Link
+                                        href={`/blog?page=${page - 1}`}
+                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    >
+                                        &larr; Önceki
+                                    </Link>
+                                )}
+
+                                {/* Page Numbers */}
+                                {[...Array(totalPages)].map((_, i) => {
+                                    const p = i + 1;
+                                    const isCurrent = p === page;
                                     return (
                                         <Link
-                                            key={category}
-                                            href={`/blog?category=${category.toLowerCase()}`}
-                                            className={`px-4 py-2 rounded-full font-medium transition-colors ${selectedCategory?.toLowerCase() === category.toLowerCase()
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                                            key={p}
+                                            href={`/blog?page=${p}`}
+                                            className={`px-4 py-2 border rounded-lg transition ${isCurrent
+                                                ? 'bg-blue-600 text-white border-blue-600'
+                                                : 'bg-white border-gray-300 hover:bg-gray-50'
                                                 }`}
                                         >
-                                            {category} ({count})
+                                            {p}
                                         </Link>
                                     );
                                 })}
-                            </div>
-                        </div>
 
-                        {/* Posts Grid */}
-                        {filteredPosts.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {filteredPosts.map((post) => (
-                                    <BlogCard key={post.slug} post={post} />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                                <p className="text-gray-600 text-lg mb-2">
-                                    Bu kategoride henüz yazı bulunmamaktadır.
-                                </p>
-                                <Link href="/blog" className="text-blue-600 hover:text-blue-700 font-medium">
-                                    Tüm yazılara dön
-                                </Link>
+                                {/* Next Page */}
+                                {page < totalPages && (
+                                    <Link
+                                        href={`/blog?page=${page + 1}`}
+                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    >
+                                        Sonraki &rarr;
+                                    </Link>
+                                )}
                             </div>
                         )}
                     </div>
 
                     {/* Sidebar */}
-                    <aside className="lg:w-80">
-                        {/* Categories Widget */}
-                        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-4">Kategoriler</h3>
-                            <ul className="space-y-2">
-                                {categories.map((category) => {
-                                    const count = allPosts.filter(
-                                        (p) => p.category.toLowerCase() === category.toLowerCase()
-                                    ).length;
-                                    return (
-                                        <li key={category}>
-                                            <Link
-                                                href={`/blog?category=${category.toLowerCase()}`}
-                                                className="flex justify-between items-center text-gray-700 hover:text-blue-600 transition-colors"
-                                            >
-                                                <span>{category}</span>
-                                                <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-sm">
-                                                    {count}
-                                                </span>
-                                            </Link>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-
-                        {/* About Widget */}
-                        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Hakkımda</h3>
-                            <p className="text-gray-700 mb-4">
-                                E-ticaret uzmanı olarak 10+ yıllık deneyimimle işletmelerin online satışlarını artırmalarına yardımcı oluyorum.
-                            </p>
-                            <Link
-                                href="/hakkimda"
-                                className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                            >
-                                Daha Fazla
-                            </Link>
-                        </div>
-                    </aside>
+                    <div className="lg:col-span-1">
+                        <Sidebar recentPosts={recentPostsForSidebar} />
+                    </div>
                 </div>
             </div>
         </div>

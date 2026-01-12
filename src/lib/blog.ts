@@ -1,104 +1,133 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { BlogPost, BlogMetadata } from '@/types/blog';
+import prisma from './prisma';
+import { BlogPost } from '@/types/blog';
 import readingTime from 'reading-time';
 
-const postsDirectory = path.join(process.cwd(), 'src/content/blog');
+// Helper to convert DB Post to BlogPost type
+const convertPostToBlogType = (post: any): BlogPost => {
+    return {
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        date: post.date.toISOString(),
+        excerpt: post.excerpt || '',
+        category: post.category?.name || 'Genel',
+        image: post.image || null,
+        author: post.author?.name || 'Hasan Durmuş',
+        content: post.content,
+        readingTime: readingTime(post.content).text,
+    };
+};
 
-// Get all blog posts
-export function getAllPosts(): BlogPost[] {
-    // Ensure directory exists
-    if (!fs.existsSync(postsDirectory)) {
-        return [];
-    }
-
-    const fileNames = fs.readdirSync(postsDirectory);
-    const allPostsData = fileNames
-        .filter((fileName) => fileName.endsWith('.mdx') || fileName.endsWith('.md'))
-        .map((fileName) => {
-            const slug = fileName.replace(/\.(mdx|md)$/, '');
-            const fullPath = path.join(postsDirectory, fileName);
-            const fileContents = fs.readFileSync(fullPath, 'utf8');
-            const { data, content } = matter(fileContents);
-            const stats = readingTime(content);
-
-            return {
-                slug,
-                title: data.title,
-                date: data.date,
-                excerpt: data.excerpt,
-                category: data.category,
-                image: data.image,
-                author: data.author || 'Hasan DURMUŞ',
-                content,
-                readingTime: stats.text,
-            } as BlogPost;
-        });
-
-    // Sort posts by date (newest first)
-    return allPostsData.sort((a, b) => {
-        if (a.date < b.date) {
-            return 1;
-        } else {
-            return -1;
-        }
+export async function getAllPosts(): Promise<BlogPost[]> {
+    const posts = await prisma.post.findMany({
+        orderBy: { date: 'desc' },
+        include: { category: true, author: true },
     });
+    return posts.map(convertPostToBlogType);
 }
 
-// Get single blog post by slug
-export function getPostBySlug(slug: string): BlogPost | null {
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+    console.log('getPostBySlug called with:', slug);
+    if (!slug || slug === 'undefined') {
+        console.warn('getPostBySlug received invalid slug:', slug);
+        return null;
+    }
+
     try {
-        const fullPath = path.join(postsDirectory, `${slug}.mdx`);
-        let fileContents: string;
+        const post = await prisma.post.findUnique({
+            where: { slug },
+            include: { category: true, author: true },
+        });
 
-        if (fs.existsSync(fullPath)) {
-            fileContents = fs.readFileSync(fullPath, 'utf8');
-        } else {
-            // Try .md extension
-            const mdPath = path.join(postsDirectory, `${slug}.md`);
-            if (fs.existsSync(mdPath)) {
-                fileContents = fs.readFileSync(mdPath, 'utf8');
-            } else {
-                return null;
-            }
-        }
-
-        const { data, content } = matter(fileContents);
-        const stats = readingTime(content);
-
-        return {
-            slug,
-            title: data.title,
-            date: data.date,
-            excerpt: data.excerpt,
-            category: data.category,
-            image: data.image,
-            author: data.author || 'Hasan DURMUŞ',
-            content,
-            readingTime: stats.text,
-        };
+        if (!post) return null;
+        return convertPostToBlogType(post);
     } catch (error) {
-        console.error(`Error reading post ${slug}:`, error);
+        console.error('getPostBySlug PRISMA ERROR:', error);
         return null;
     }
 }
 
-// Get posts by category
-export function getPostsByCategory(category: string): BlogPost[] {
-    const allPosts = getAllPosts();
-    return allPosts.filter((post) => post.category.toLowerCase() === category.toLowerCase());
+export async function getPostsByCategory(categorySlug: string): Promise<BlogPost[]> {
+    // Note: The previous logic filtered by category NAME, so we might need to adjust.
+    // If input is slug 'e-ticaret', we find by category slug.
+    // If input is name 'E-Ticaret' (which page.tsx was doing), we might need to change call sites or handle both.
+    // For now, let's assume filtering by Category Name for backward compatibility or Slug?
+    // The previous code `post.category.toLowerCase() === category.toLowerCase()` was fuzzy.
+
+    // Let's try matching Name partially or Exact?
+    // Better to query by connection if possible.
+
+    // Let's first fetch category by likely slug or name match
+    const posts = await prisma.post.findMany({
+        where: {
+            OR: [
+                { category: { name: { equals: categorySlug, mode: 'insensitive' } } },
+                { category: { slug: { equals: categorySlug, mode: 'insensitive' } } }
+            ]
+        },
+        orderBy: { date: 'desc' },
+        include: { category: true, author: true },
+    });
+    return posts.map(convertPostToBlogType);
 }
 
-// Get all categories
-export function getAllCategories(): string[] {
-    const allPosts = getAllPosts();
-    const categories = allPosts.map((post) => post.category);
-    return Array.from(new Set(categories));
+export async function getAllCategories(): Promise<string[]> {
+    const categories = await prisma.category.findMany({
+        select: { name: true },
+    });
+    return categories.map(c => c.name);
 }
 
-// Get recent posts
-export function getRecentPosts(limit: number = 6): BlogPost[] {
-    const allPosts = getAllPosts();
-    return allPosts.slice(0, limit);
+
+interface GetPostsOptions {
+    page?: number;
+    limit?: number;
+    categorySlug?: string;
+}
+
+interface GetPostsResult {
+    posts: BlogPost[];
+    totalPages: number;
+    totalPosts: number;
+}
+
+export async function getPosts({ page = 1, limit = 10, categorySlug }: GetPostsOptions): Promise<GetPostsResult> {
+    const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (categorySlug) {
+        where.OR = [
+            { category: { name: { equals: categorySlug, mode: 'insensitive' } } },
+            { category: { slug: { equals: categorySlug, mode: 'insensitive' } } }
+        ];
+    }
+
+    const [posts, totalPosts] = await Promise.all([
+        prisma.post.findMany({
+            where,
+            orderBy: { date: 'desc' },
+            skip,
+            take: limit,
+            include: { category: true, author: true },
+        }),
+        prisma.post.count({ where })
+    ]);
+
+    const totalPages = Math.ceil(totalPosts / limit);
+
+    return {
+        posts: posts.map(convertPostToBlogType),
+        totalPages,
+        totalPosts
+    };
+}
+
+export async function getRecentPosts(limit: number = 6): Promise<BlogPost[]> {
+    const posts = await prisma.post.findMany({
+        orderBy: { date: 'desc' },
+        take: limit,
+        include: { category: true, author: true },
+    });
+    console.log('getRecentPosts fetched:', posts.length);
+    return posts.map(convertPostToBlogType);
 }

@@ -1,0 +1,167 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import BlogListItem from '@/components/BlogListItem';
+import Sidebar from '@/components/Sidebar';
+import Breadcrumb from '@/components/Breadcrumb';
+import { getPosts, getRecentPosts } from '@/lib/blog';
+import { PrismaClient } from '@prisma/client';
+
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+    const slug = decodeURIComponent(params.slug);
+    const prisma = new PrismaClient();
+    const category = await prisma.category.findFirst({
+        where: {
+            OR: [
+                { slug: { equals: slug, mode: 'insensitive' } },
+                { name: { equals: slug, mode: 'insensitive' } }
+            ]
+        }
+    });
+
+    // Simple capitalization for title if category name not found directly (fallback)
+    const title = category?.name || slug.charAt(0).toUpperCase() + slug.slice(1);
+
+    return {
+        title: `${title} Yazıları - Blog | Hasan Durmuş`,
+        description: `${title} hakkında en güncel yazılar, rehberler ve ipuçları.`,
+    };
+}
+
+export default async function CategoryPage({
+    params,
+    searchParams,
+}: {
+    params: Promise<{ slug: string }>;
+    searchParams: Promise<{ page?: string }>;
+}) {
+    const resolvedParams = await params;
+    const resolvedSearchParams = await searchParams;
+
+    const slug = decodeURIComponent(resolvedParams.slug);
+    const page = Number(resolvedSearchParams.page) || 1;
+
+    const limit = 10;
+
+    // Fetch posts with pagination
+    const { posts, totalPages, totalPosts } = await getPosts({
+        page,
+        limit,
+        categorySlug: slug
+    });
+
+    const prisma = new PrismaClient();
+    const category = await prisma.category.findFirst({
+        where: {
+            OR: [
+                { slug: { equals: slug, mode: 'insensitive' } },
+                { name: { equals: slug, mode: 'insensitive' } }
+            ]
+        }
+    });
+
+    if (!category && posts.length === 0) {
+        notFound();
+    }
+
+    const categoryName = category?.name || slug.toUpperCase();
+
+    // Fetch recent posts for sidebar
+    const recentPostsForSidebar = await getRecentPosts(5);
+
+    return (
+        <div className="bg-gray-50 min-h-screen">
+            {/* Header */}
+            <div className="bg-blue-900 text-white py-12">
+                <div className="container mx-auto px-4">
+                    <div className="mb-4">
+                        <Breadcrumb items={[
+                            { label: 'Ana Sayfa', href: '/' },
+                            { label: 'Blog', href: '/blog' },
+                            { label: categoryName, href: `/blog/kategori/${slug}` },
+                        ]} />
+                    </div>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                        {categoryName} Yazıları
+                    </h1>
+                    <p className="text-blue-200">
+                        Bu kategoride toplam {totalPosts} yazı listeleniyor
+                    </p>
+                </div>
+            </div>
+
+            <div className="container mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Content */}
+                    <div className="lg:col-span-2">
+
+                        {/* Posts List */}
+                        <div className="flex flex-col gap-6">
+                            {posts.length > 0 ? (
+                                posts.map((post) => (
+                                    <BlogListItem key={post.slug} post={post} />
+                                ))
+                            ) : (
+                                <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                                    <p className="text-gray-600 text-lg mb-4">
+                                        Bu kategoride henüz yazı bulunmamaktadır.
+                                    </p>
+                                    <Link href="/blog" className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                        Tüm yazılara dön
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="mt-8 flex justify-center gap-2">
+                                {/* Previous Page */}
+                                {page > 1 && (
+                                    <Link
+                                        href={`/blog/kategori/${slug}?page=${page - 1}`}
+                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    >
+                                        &larr; Önceki
+                                    </Link>
+                                )}
+
+                                {/* Page Numbers */}
+                                {[...Array(totalPages)].map((_, i) => {
+                                    const p = i + 1;
+                                    const isCurrent = p === page;
+                                    return (
+                                        <Link
+                                            key={p}
+                                            href={`/blog/kategori/${slug}?page=${p}`}
+                                            className={`px-4 py-2 border rounded-lg transition ${isCurrent
+                                                ? 'bg-blue-600 text-white border-blue-600'
+                                                : 'bg-white border-gray-300 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {p}
+                                        </Link>
+                                    );
+                                })}
+
+                                {/* Next Page */}
+                                {page < totalPages && (
+                                    <Link
+                                        href={`/blog/kategori/${slug}?page=${page + 1}`}
+                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                    >
+                                        Sonraki &rarr;
+                                    </Link>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="lg:col-span-1">
+                        <Sidebar recentPosts={recentPostsForSidebar} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

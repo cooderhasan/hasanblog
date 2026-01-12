@@ -27,13 +27,13 @@ export default function BlogCard({ post }: BlogCardProps) {
                 <div className="p-6">
                     {/* Category */}
                     <div className="mb-2">
-                        <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full">
+                        <span className="inline-block px-3 py-1 text-xs font-semibold text-green-600 bg-green-50 rounded-full">
                             {post.category}
                         </span>
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                    <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
                         {post.title}
                     </h2>
 
