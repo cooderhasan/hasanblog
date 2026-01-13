@@ -2,9 +2,9 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
 
-// Admin credentials (in production, use environment variables or database)
-const ADMIN_EMAIL = 'admin@hasandurmus.com';
-const ADMIN_PASSWORD = 'admin123'; // CHANGE THIS IN PRODUCTION
+// Admin credentials from environment variables
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@hasandurmus.com';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
