@@ -227,3 +227,21 @@ export async function deleteComment(id: string) {
         return { success: false, error: 'Failed to delete comment' };
     }
 }
+
+export async function replyToComment(id: string, reply: string) {
+    try {
+        await prisma.comment.update({
+            where: { id },
+            data: {
+                adminReply: reply,
+                adminReplyDate: new Date()
+            }
+        });
+        revalidatePath('/admin/comments');
+        revalidatePath('/blog');
+        return { success: true };
+    } catch (error) {
+        console.error('Reply Comment Error:', error);
+        return { success: false, error: 'Failed to reply to comment' };
+    }
+}

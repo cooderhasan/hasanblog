@@ -107,7 +107,9 @@ export default async function BlogPostPage(props: any) {
             id: true,
             name: true,
             content: true,
-            createdAt: true
+            createdAt: true,
+            adminReply: true,
+            adminReplyDate: true
         }
     });
 

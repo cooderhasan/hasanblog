@@ -47,6 +47,10 @@ model Comment {
   email     String
   approved  Boolean  @default(false)
   
+  // Admin Reply
+  adminReply      String?   @db.Text
+  adminReplyDate  DateTime?
+  
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
 

@@ -5,7 +5,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface RichTextEditorProps {
     content: string;
@@ -15,6 +15,10 @@ interface RichTextEditorProps {
 
 export default function RichTextEditor({ content, onChange, placeholder }: RichTextEditorProps) {
     const [seoScore, setSeoScore] = useState({ h1: 0, h2: 0, h3: 0, paragraphs: 0, links: 0, images: 0 });
+    const [showLinkModal, setShowLinkModal] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [linkUrl, setLinkUrl] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -26,8 +30,17 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
             }),
             Link.configure({
                 openOnClick: false,
+                HTMLAttributes: {
+                    class: 'text-blue-600 underline',
+                },
             }),
-            Image,
+            Image.configure({
+                inline: false,
+                allowBase64: true,
+                HTMLAttributes: {
+                    class: 'max-w-full h-auto rounded-lg',
+                },
+            }),
             Placeholder.configure({
                 placeholder: placeholder || 'İçeriğinizi buraya yazın...',
             }),
@@ -45,7 +58,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         },
     });
 
-    const analyzeSEO = (html: string) => {
+    const analyzeSEO = useCallback((html: string) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         setSeoScore({
@@ -56,26 +69,50 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
             links: doc.querySelectorAll('a').length,
             images: doc.querySelectorAll('img').length,
         });
-    };
+    }, []);
 
     useEffect(() => {
         if (content) analyzeSEO(content);
-    }, []);
+    }, [content, analyzeSEO]);
 
     if (!editor) return null;
 
     const addLink = () => {
-        const url = prompt('Link URL:');
-        if (url) {
+        // Get current selection's link if exists
+        const previousUrl = editor.getAttributes('link').href || '';
+        setLinkUrl(previousUrl);
+        setShowLinkModal(true);
+    };
+
+    const confirmLink = () => {
+        if (linkUrl) {
+            // Add https if not present
+            const url = linkUrl.startsWith('http') ? linkUrl : `https://${linkUrl}`;
             editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+        } else {
+            editor.chain().focus().unsetLink().run();
         }
+        setShowLinkModal(false);
+        setLinkUrl('');
+    };
+
+    const removeLink = () => {
+        editor.chain().focus().unsetLink().run();
+        setShowLinkModal(false);
+        setLinkUrl('');
     };
 
     const addImage = () => {
-        const url = prompt('Resim URL:');
-        if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
+        setImageUrl('');
+        setShowImageModal(true);
+    };
+
+    const confirmImage = () => {
+        if (imageUrl) {
+            editor.chain().focus().setImage({ src: imageUrl }).run();
         }
+        setShowImageModal(false);
+        setImageUrl('');
     };
 
     return (
@@ -147,7 +184,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
                 <button
                     type="button"
                     onClick={addLink}
-                    className="px-3 py-1.5 rounded text-sm bg-white border hover:bg-gray-100"
+                    className={`px-3 py-1.5 rounded text-sm ${editor.isActive('link') ? 'bg-blue-600 text-white' : 'bg-white border hover:bg-gray-100'}`}
                 >
                     🔗 Link
                 </button>
@@ -162,6 +199,115 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
 
             {/* Editor Content */}
             <EditorContent editor={editor} className="bg-white" />
+
+            {/* Link Modal */}
+            {showLinkModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowLinkModal(false)}>
+                    <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Link Ekle</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                            <input
+                                type="url"
+                                value={linkUrl}
+                                onChange={(e) => setLinkUrl(e.target.value)}
+                                placeholder="https://example.com"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                autoFocus
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        confirmLink();
+                                    }
+                                }}
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Önce metni seçin, sonra linki ekleyin</p>
+                        </div>
+                        <div className="flex gap-2 justify-end">
+                            {editor.isActive('link') && (
+                                <button
+                                    type="button"
+                                    onClick={removeLink}
+                                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                                >
+                                    Linki Kaldır
+                                </button>
+                            )}
+                            <button
+                                type="button"
+                                onClick={() => setShowLinkModal(false)}
+                                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
+                            >
+                                İptal
+                            </button>
+                            <button
+                                type="button"
+                                onClick={confirmLink}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                            >
+                                Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Image Modal */}
+            {showImageModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowImageModal(false)}>
+                    <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Görsel Ekle</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Görsel URL</label>
+                            <input
+                                type="url"
+                                value={imageUrl}
+                                onChange={(e) => setImageUrl(e.target.value)}
+                                placeholder="https://example.com/resim.jpg"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                autoFocus
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        confirmImage();
+                                    }
+                                }}
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Görsel URL'sini yapıştırın (örn: Unsplash, Pexels vb.)</p>
+                        </div>
+                        {imageUrl && (
+                            <div className="mb-4 p-2 bg-gray-100 rounded-lg">
+                                <p className="text-xs text-gray-500 mb-2">Önizleme:</p>
+                                <img
+                                    src={imageUrl}
+                                    alt="Önizleme"
+                                    className="max-h-32 rounded mx-auto"
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
+                                />
+                            </div>
+                        )}
+                        <div className="flex gap-2 justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setShowImageModal(false)}
+                                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition"
+                            >
+                                İptal
+                            </button>
+                            <button
+                                type="button"
+                                onClick={confirmImage}
+                                disabled={!imageUrl}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Ekle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* SEO Guidance Panel */}
             <div className="bg-gray-50 border-t border-gray-200 p-3">
