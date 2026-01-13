@@ -2,6 +2,7 @@
 
 import { createPost, updatePost } from '@/app/actions';
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import ImageUpload from './ImageUpload';
@@ -31,6 +32,7 @@ interface PostFormProps {
 }
 
 export default function PostForm({ categories, post }: PostFormProps) {
+    const router = useRouter();
     const [content, setContent] = useState(post?.content || '');
     const [image, setImage] = useState(post?.image || '');
     const [title, setTitle] = useState(post?.title || '');
@@ -85,11 +87,13 @@ export default function PostForm({ categories, post }: PostFormProps) {
 
             if (result?.error) {
                 toast.error(result.error);
-            } else {
+            } else if (result?.success) {
                 toast.success(post ? 'Yazı başarıyla güncellendi!' : 'Yazı başarıyla oluşturuldu!');
-                // Redirect is handled by server action, but we might want to wait/ensure
+                router.push('/admin/posts');
+                router.refresh(); // Refresh server components
             }
         } catch (error) {
+            console.error('Submit error:', error);
             toast.error('Bir şeyler ters gitti.');
         } finally {
             setIsSubmitting(false);

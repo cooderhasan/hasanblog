@@ -158,6 +158,7 @@ export default async function BlogPostPage(props: any) {
                                     src={post.image}
                                     alt={post.title}
                                     fill
+                                    unoptimized={post.image.startsWith('/uploads/')}
                                     className="object-cover"
                                     priority
                                 />
@@ -195,6 +196,7 @@ export default async function BlogPostPage(props: any) {
                                                         src={relatedPost.image}
                                                         alt={relatedPost.title}
                                                         fill
+                                                        unoptimized={relatedPost.image.startsWith('/uploads/')}
                                                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                     />
                                                 </div>

@@ -18,6 +18,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                             src={post.image}
                             alt={post.title}
                             fill
+                            unoptimized={post.image.startsWith('/uploads/')}
                             className="object-cover hover:scale-105 transition-transform duration-500"
                         />
                     ) : (

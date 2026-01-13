@@ -17,6 +17,7 @@ export async function deletePost(id: string) {
         });
         revalidatePath('/admin/posts');
         revalidatePath('/blog');
+        revalidatePath('/');
         return { success: true };
     } catch (error) {
         console.error('Failed to delete post:', error);
@@ -78,6 +79,7 @@ export async function createPost(formData: FormData) {
 
         revalidatePath('/admin/posts');
         revalidatePath('/blog');
+        revalidatePath('/');
         isSuccess = true;
     } catch (error) {
         console.error('Create Post Error:', error);
@@ -85,7 +87,7 @@ export async function createPost(formData: FormData) {
     }
 
     if (isSuccess) {
-        redirect('/admin/posts');
+        return { success: true };
     }
 }
 
@@ -116,6 +118,7 @@ export async function updatePost(id: string, formData: FormData) {
 
         revalidatePath('/admin/posts');
         revalidatePath('/blog');
+        revalidatePath('/');
         isSuccess = true;
     } catch (error) {
         console.error('Update Post Error:', error);
@@ -123,7 +126,7 @@ export async function updatePost(id: string, formData: FormData) {
     }
 
     if (isSuccess) {
-        redirect('/admin/posts');
+        return { success: true };
     }
 }
 
