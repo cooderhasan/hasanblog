@@ -10,6 +10,7 @@ export default function AdminLoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [debugResult, setDebugResult] = useState<any>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,6 +30,7 @@ export default function AdminLoginPage() {
             });
 
             console.log('signIn result:', result);
+            setDebugResult(result);
 
             if (result?.error) {
                 console.log('signIn error:', result.error);
@@ -121,6 +123,15 @@ export default function AdminLoginPage() {
                         </button>
                     </form>
                 </div>
+
+                {/* Debug Info */}
+                {debugResult && (
+                    <div className="mt-8 p-4 bg-black/80 text-green-400 font-mono text-xs rounded-lg overflow-auto max-h-60 border border-green-500/30">
+                        <h3 className="font-bold border-b border-green-500/30 mb-2 pb-1">Debug Info</h3>
+                        <pre>{JSON.stringify(debugResult, null, 2)}</pre>
+                        <p className="mt-2 text-gray-400">Time: {new Date().toLocaleTimeString()}</p>
+                    </div>
+                )}
 
                 {/* Footer */}
                 <p className="text-center text-blue-400 text-sm mt-8" suppressHydrationWarning>
