@@ -11,7 +11,7 @@ export const authConfig = {
                 httpOnly: true,
                 sameSite: 'lax',
                 path: '/',
-                secure: process.env.NODE_ENV === 'production',
+                secure: false, // Force false for Coolify proxy compatibility
             },
         },
     },
