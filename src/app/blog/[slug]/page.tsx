@@ -14,10 +14,16 @@ import CommentForm from '@/components/CommentForm';
 import prisma from '@/lib/prisma';
 
 export async function generateStaticParams() {
-    const posts = await getAllPosts();
-    return posts.map((post) => ({
-        slug: post.slug,
-    }));
+    try {
+        const posts = await getAllPosts();
+        return posts.map((post) => ({
+            slug: post.slug,
+        }));
+    } catch (error) {
+        // Database might not exist during build time
+        console.log('generateStaticParams: Database not available, returning empty array');
+        return [];
+    }
 }
 
 export async function generateMetadata(props: any) {
