@@ -9,7 +9,7 @@ export const authConfig = {
             name: `next-auth.session-token`,
             options: {
                 httpOnly: true,
-                sameSite: 'lax' as const,
+                sameSite: 'lax',
                 path: '/',
                 secure: process.env.NODE_ENV === 'production',
             },
@@ -23,18 +23,18 @@ export const authConfig = {
 
             if (isOnAdmin) {
                 if (isOnLoginPage) {
-                    // Allow access to login page
                     if (isLoggedIn) {
-                        // If already logged in, redirect to admin dashboard
                         return Response.redirect(new URL('/admin', nextUrl));
                     }
                     return true;
                 }
-                // Require login for other admin pages
-                if (isLoggedIn) return true;
-                return false; // Redirect unauthenticated users to login page
+
+                if (!isLoggedIn) {
+                    return false;
+                }
+                return true;
             }
-            return true; // Allow access to non-admin pages
+            return true;
         },
     },
     providers: [], // Configured in auth.ts
