@@ -45,14 +45,16 @@ export default async function EditPostPage({
             {/* Form */}
             <PostForm
                 categories={categories}
-                initialData={{
+                post={{
                     id: post.id,
                     title: post.title,
                     slug: post.slug,
                     excerpt: post.excerpt || '',
                     content: post.content,
                     image: post.image || '',
-                    categoryId: post.categoryId || '',
+                    categoryId: post.categoryId,
+                    published: post.published,
+                    focusKeyword: post.focusKeyword || '',
                 }}
             />
         </div>
