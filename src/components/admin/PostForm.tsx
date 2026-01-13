@@ -76,15 +76,21 @@ export default function PostForm({ categories, post }: PostFormProps) {
         formData.set('focusKeyword', focusKeyword);
 
         try {
+            let result;
             if (post) {
-                await updatePost(post.id, formData);
-                toast.success('Yazı başarıyla güncellendi!');
+                result = await updatePost(post.id, formData);
             } else {
-                await createPost(formData);
-                toast.success('Yazı başarıyla oluşturuldu!');
+                result = await createPost(formData);
+            }
+
+            if (result?.error) {
+                toast.error(result.error);
+            } else {
+                toast.success(post ? 'Yazı başarıyla güncellendi!' : 'Yazı başarıyla oluşturuldu!');
+                // Redirect is handled by server action, but we might want to wait/ensure
             }
         } catch (error) {
-            toast.error('Bir hata oluştu. Lütfen tekrar deneyin.');
+            toast.error('Bir şeyler ters gitti.');
         } finally {
             setIsSubmitting(false);
         }

@@ -19,6 +19,8 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     const [showImageModal, setShowImageModal] = useState(false);
     const [linkUrl, setLinkUrl] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadTab, setUploadTab] = useState<'url' | 'upload'>('upload');
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -71,6 +73,17 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         });
     }, []);
 
+    // Sync content from prop to editor (e.g. initial load or external update)
+    useEffect(() => {
+        if (editor && content && content !== editor.getHTML()) {
+            // Only update if content is different to avoid cursor jumps/loops
+            // Check if the difference is just empty paragraph wrapper
+            if (editor.getHTML() === '<p></p>' && !content) return;
+
+            editor.commands.setContent(content);
+        }
+    }, [content, editor]);
+
     useEffect(() => {
         if (content) analyzeSEO(content);
     }, [content, analyzeSEO]);
@@ -113,6 +126,36 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
         }
         setShowImageModal(false);
         setImageUrl('');
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                setImageUrl(data.url);
+                // Optionally auto-insert:
+                // editor.chain().focus().setImage({ src: data.url }).run();
+                // setShowImageModal(false);
+            } else {
+                alert('Yükleme başarısız: ' + data.error);
+            }
+        } catch (error) {
+            alert('Bir hata oluştu');
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     return (
@@ -258,34 +301,85 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
                     <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
                         <h3 className="text-lg font-bold text-gray-900 mb-4">Görsel Ekle</h3>
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Görsel URL</label>
-                            <input
-                                type="url"
-                                value={imageUrl}
-                                onChange={(e) => setImageUrl(e.target.value)}
-                                placeholder="https://example.com/resim.jpg"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                                autoFocus
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        confirmImage();
-                                    }
-                                }}
-                            />
-                            <p className="text-xs text-gray-500 mt-1">Görsel URL'sini yapıştırın (örn: Unsplash, Pexels vb.)</p>
+                            <div className="flex border-b border-gray-200 mb-4">
+                                <button
+                                    className={`flex-1 pb-2 text-sm font-medium ${uploadTab === 'upload' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                    onClick={() => setUploadTab('upload')}
+                                >
+                                    Dosya Yükle
+                                </button>
+                                <button
+                                    className={`flex-1 pb-2 text-sm font-medium ${uploadTab === 'url' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                    onClick={() => setUploadTab('url')}
+                                >
+                                    URL ile Ekle
+                                </button>
+                            </div>
+
+                            {uploadTab === 'upload' ? (
+                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileUpload}
+                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                        disabled={isUploading}
+                                    />
+                                    {isUploading ? (
+                                        <div className="text-gray-500 flex flex-col items-center">
+                                            <svg className="animate-spin h-6 w-6 text-blue-600 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Yükleniyor...
+                                        </div>
+                                    ) : (
+                                        <div className="text-gray-500">
+                                            <p className="font-medium">Tıklayın veya sürükleyin</p>
+                                            <p className="text-xs mt-1">PNG, JPG, WebP</p>
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Görsel URL</label>
+                                    <input
+                                        type="url"
+                                        value={imageUrl}
+                                        onChange={(e) => setImageUrl(e.target.value)}
+                                        placeholder="https://example.com/resim.jpg"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                        autoFocus
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                confirmImage();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            )}
                         </div>
+
                         {imageUrl && (
-                            <div className="mb-4 p-2 bg-gray-100 rounded-lg">
+                            <div className="mb-4 p-2 bg-gray-100 rounded-lg relative">
                                 <p className="text-xs text-gray-500 mb-2">Önizleme:</p>
                                 <img
                                     src={imageUrl}
                                     alt="Önizleme"
-                                    className="max-h-32 rounded mx-auto"
+                                    className="max-h-32 rounded mx-auto object-contain"
                                     onError={(e) => {
                                         (e.target as HTMLImageElement).style.display = 'none';
                                     }}
                                 />
+                                {uploadTab === 'upload' && !isUploading && (
+                                    <button
+                                        onClick={() => setImageUrl('')}
+                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                )}
                             </div>
                         )}
                         <div className="flex gap-2 justify-end">

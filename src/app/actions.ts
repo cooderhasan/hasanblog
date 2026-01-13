@@ -46,36 +46,47 @@ export async function createPost(formData: FormData) {
         counter++;
     }
 
-    let author = await prisma.author.findFirst();
-    if (!author) {
-        // Create default author if none exists
-        console.log('No author found, creating default author...');
-        author = await prisma.author.create({
+    let isSuccess = false;
+
+    try {
+        let author = await prisma.author.findFirst();
+        if (!author) {
+            // Create default author if none exists
+            console.log('No author found, creating default author...');
+            author = await prisma.author.create({
+                data: {
+                    name: 'Admin',
+                    bio: 'Site Yöneticisi',
+                    avatar: '/images/default-avatar.png'
+                }
+            });
+        }
+
+        await prisma.post.create({
             data: {
-                name: 'Admin',
-                bio: 'Site Yöneticisi',
-                avatar: '/images/default-avatar.png'
-            }
+                title,
+                slug: uniqueSlug,
+                content,
+                excerpt,
+                image,
+                published,
+                focusKeyword,
+                categoryId,
+                authorId: author.id,
+            },
         });
+
+        revalidatePath('/admin/posts');
+        revalidatePath('/blog');
+        isSuccess = true;
+    } catch (error) {
+        console.error('Create Post Error:', error);
+        return { success: false, error: 'Yazı oluşturulurken bir hata oluştu.' };
     }
 
-    await prisma.post.create({
-        data: {
-            title,
-            slug: uniqueSlug,
-            content,
-            excerpt,
-            image,
-            published,
-            focusKeyword,
-            categoryId,
-            authorId: author.id,
-        },
-    });
-
-    revalidatePath('/admin/posts');
-    revalidatePath('/blog');
-    redirect('/admin/posts');
+    if (isSuccess) {
+        redirect('/admin/posts');
+    }
 }
 
 export async function updatePost(id: string, formData: FormData) {
@@ -87,21 +98,33 @@ export async function updatePost(id: string, formData: FormData) {
     const published = formData.get('published') === 'on';
     const focusKeyword = formData.get('focusKeyword') as string;
 
-    await prisma.post.update({
-        where: { id },
-        data: {
-            title,
-            content,
-            categoryId,
-            excerpt,
-            image,
-            published,
-        },
-    });
+    let isSuccess = false;
 
-    revalidatePath('/admin/posts');
-    revalidatePath('/blog');
-    redirect('/admin/posts');
+    try {
+        await prisma.post.update({
+            where: { id },
+            data: {
+                title,
+                content,
+                categoryId,
+                excerpt,
+                image,
+                published,
+                focusKeyword,
+            },
+        });
+
+        revalidatePath('/admin/posts');
+        revalidatePath('/blog');
+        isSuccess = true;
+    } catch (error) {
+        console.error('Update Post Error:', error);
+        return { success: false, error: 'Yazı güncellenirken bir hata oluştu.' };
+    }
+
+    if (isSuccess) {
+        redirect('/admin/posts');
+    }
 }
 
 // Category Actions
