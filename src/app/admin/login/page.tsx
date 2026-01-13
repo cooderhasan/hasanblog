@@ -37,7 +37,8 @@ export default function AdminLoginPage() {
                 setError('Geçersiz e-posta veya şifre.');
             } else if (result?.ok) {
                 console.log('signIn success, redirecting...');
-                window.location.href = '/admin';
+                // window.location.href = '/admin';
+                alert('Giriş Başarılı (Debug Modu)! Aşağıdaki yeşil kutuyu kontrol edin.');
             }
         } catch (err) {
             console.error('signIn exception:', err);
