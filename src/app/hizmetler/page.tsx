@@ -6,11 +6,6 @@ export const metadata: Metadata = {
     description: 'E-ticaret danışmanlığı, SEO optimizasyonu, Google Ads yönetimi ve pazar yeri entegrasyon hizmetlerim.',
 };
 
-export const metadata = {
-    title: 'Hizmetler - Hasan Durmuş',
-    description: 'E-ticaret danışmanlığı ve dijital pazarlama hizmetlerim.',
-};
-
 export default function ServicesPage() {
     return (
         <div className="bg-white min-h-screen">
