@@ -46,9 +46,17 @@ export async function createPost(formData: FormData) {
         counter++;
     }
 
-    const author = await prisma.author.findFirst();
+    let author = await prisma.author.findFirst();
     if (!author) {
-        throw new Error('No author found in database to assign to post.');
+        // Create default author if none exists
+        console.log('No author found, creating default author...');
+        author = await prisma.author.create({
+            data: {
+                name: 'Admin',
+                bio: 'Site Yöneticisi',
+                avatar: '/images/default-avatar.png'
+            }
+        });
     }
 
     await prisma.post.create({
