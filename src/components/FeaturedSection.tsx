@@ -24,6 +24,7 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                                 src={mainPost.image}
                                 alt={mainPost.title}
                                 fill
+                                unoptimized={mainPost.image.startsWith('/uploads/')}
                                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                         ) : (
@@ -56,6 +57,7 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                                     src={post.image}
                                     alt={post.title}
                                     fill
+                                    unoptimized={post.image.startsWith('/uploads/')}
                                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                             ) : (

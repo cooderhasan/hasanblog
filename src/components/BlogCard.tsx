@@ -18,6 +18,7 @@ export default function BlogCard({ post }: BlogCardProps) {
                             src={post.image}
                             alt={post.title}
                             fill
+                            unoptimized={post.image.startsWith('/uploads/')}
                             className="object-cover transition-transform group-hover:scale-105"
                         />
                     </div>

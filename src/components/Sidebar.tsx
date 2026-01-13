@@ -36,6 +36,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                                             src={post.image}
                                             alt={post.title}
                                             fill
+                                            unoptimized={post.image.startsWith('/uploads/')}
                                             className="object-cover group-hover:scale-105 transition-transform"
                                         />
                                     )}
@@ -63,6 +64,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                                             src={post.image}
                                             alt={post.title}
                                             fill
+                                            unoptimized={post.image.startsWith('/uploads/')}
                                             className="object-cover group-hover:scale-105 transition-transform"
                                         />
                                     )}

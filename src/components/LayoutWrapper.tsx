@@ -2,11 +2,21 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsappButton from '@/components/WhatsappButton';
 import ClientLayoutWrapper from './ClientLayoutWrapper';
+import prisma from '@/lib/prisma';
 
-export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
+export default async function LayoutWrapper({ children }: { children: React.ReactNode }) {
+    let settings;
+    try {
+        settings = await prisma.siteSettings.findUnique({
+            where: { id: 'main' }
+        });
+    } catch (e) {
+        console.error('Failed to fetch settings in layout', e);
+    }
+
     const publicLayout = (
         <>
-            <Header />
+            <Header logoUrl={settings?.logoUrl} />
             <main className="min-h-screen">
                 {children}
             </main>

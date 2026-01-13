@@ -26,6 +26,7 @@ export default async function Footer() {
                                 src={posts[0].image}
                                 alt={posts[0].title}
                                 fill
+                                unoptimized={posts[0].image.startsWith('/uploads/')}
                                 className="object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                         ) : (

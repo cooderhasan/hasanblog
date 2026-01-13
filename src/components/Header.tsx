@@ -2,8 +2,13 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import Image from 'next/image';
 
-export default function Header() {
+interface HeaderProps {
+    logoUrl?: string | null;
+}
+
+export default function Header({ logoUrl }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -14,10 +19,25 @@ export default function Header() {
                     {/* Logo Area */}
                     <div className="flex items-center justify-between w-full lg:w-auto">
                         <Link href="/" className="flex flex-col z-20">
-                            <h1 className="text-2xl font-bold text-gray-900 leading-none">
-                                <span className="text-black">Hasan</span> <span className="text-green-600">Durmuş</span>
-                            </h1>
-                            <span className="text-xs text-gray-500 tracking-wider">E-ticaret Uzmanı</span>
+                            {logoUrl ? (
+                                <div className="relative h-12 w-48">
+                                    <Image
+                                        src={logoUrl}
+                                        alt="Hasan Durmuş"
+                                        fill
+                                        className="object-contain object-left"
+                                        priority
+                                        unoptimized={logoUrl.startsWith('/uploads/')}
+                                    />
+                                </div>
+                            ) : (
+                                <>
+                                    <h1 className="text-2xl font-bold text-gray-900 leading-none">
+                                        <span className="text-black">Hasan</span> <span className="text-green-600">Durmuş</span>
+                                    </h1>
+                                    <span className="text-xs text-gray-500 tracking-wider">E-ticaret Uzmanı</span>
+                                </>
+                            )}
                         </Link>
 
                         {/* Mobile Menu Button */}
