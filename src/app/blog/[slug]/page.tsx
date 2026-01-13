@@ -81,8 +81,16 @@ export default async function BlogPostPage(props: any) {
         notFound();
     }
 
-    // Convert Markdown to HTML
-    const contentHtml = await markdownToHtml(post.content || '');
+    // Detect if content is HTML (from new editor) or Markdown (legacy)
+    const isHtml = post.content?.trim().startsWith('<');
+
+    let contentHtml = '';
+    if (isHtml) {
+        contentHtml = post.content || '';
+    } else {
+        contentHtml = await markdownToHtml(post.content || '');
+    }
+
     const { html: htmlWithIds, toc } = addHeadingIds(contentHtml);
     console.log('[BlogPostPage] Content HTML length:', contentHtml.length);
     // console.log('[BlogPostPage] HTML with IDs sample:', htmlWithIds.substring(0, 200));
