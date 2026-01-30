@@ -9,9 +9,9 @@ interface BlogListItemProps {
 
 export default function BlogListItem({ post }: BlogListItemProps) {
     return (
-        <article className="flex flex-col md:flex-row gap-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            {/* Image */}
-            <div className="md:w-1/3 relative h-48 md:h-auto min-h-[200px] rounded-lg overflow-hidden shrink-0">
+        <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-100 last:border-b-0">
+            {/* Image Section */}
+            <div className="md:w-5/12 lg:w-1/3 relative h-56 md:h-auto min-h-[220px] rounded-xl overflow-hidden shrink-0 group">
                 <Link href={`/blog/${post.slug}`}>
                     {post.image ? (
                         <Image
@@ -19,55 +19,51 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                             alt={post.title}
                             fill
                             unoptimized={post.image.startsWith('/uploads/')}
-                            className="object-cover hover:scale-105 transition-transform duration-500"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                     ) : (
-                        <div className="w-full h-full bg-gray-200" />
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                            <span className="text-4xl">📷</span>
+                        </div>
                     )}
                 </Link>
-                {/* Category Badge Over Image */}
-                <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 text-xs font-semibold text-white bg-green-600 rounded shadow-sm">
-                        {post.category}
-                    </span>
-                </div>
             </div>
 
-            {/* Content */}
-            <div className="md:w-2/3 flex flex-col justify-center">
-                <div className="flex items-center text-xs text-gray-500 mb-3 space-x-2">
-                    <span className="font-medium text-gray-700">{post.author}</span>
-                    <span>•</span>
-                    <span>{formatDate(post.date)}</span>
-                    {post.readingTime && (
-                        <>
-                            <span>•</span>
-                            <span>{post.readingTime}</span>
-                        </>
-                    )}
+            {/* Content Section */}
+            <div className="md:w-7/12 lg:w-2/3 flex flex-col justify-start py-1">
+                {/* Category */}
+                <div className="mb-3">
+                    <Link
+                        href={`/blog/kategori/${post.category.toLowerCase().replace(/ /g, '-')}`}
+                        className="inline-block px-3 py-1 text-xs font-bold text-white bg-teal-400 rounded-md hover:bg-teal-500 transition-colors uppercase tracking-wide"
+                    >
+                        {post.category}
+                    </Link>
                 </div>
 
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-green-600 transition-colors">
-                    <Link href={`/blog/${post.slug}`}>
+                {/* Title */}
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-tight group">
+                    <Link href={`/blog/${post.slug}`} className="hover:text-teal-500 transition-colors">
                         {post.title}
                     </Link>
                 </h2>
 
-                <p className="text-gray-600 mb-4 line-clamp-2 md:line-clamp-3 leading-relaxed">
+                {/* Meta Info */}
+                <div className="flex items-center text-xs md:text-sm text-gray-400 mb-4 font-medium">
+                    <span className="text-gray-600 mr-1">{post.author}</span>
+                    <span className="mx-2">•</span>
+                    <span>{formatDate(post.date)}</span>
+                    <span className="mx-2">•</span>
+                    <span>0 Yorum</span> {/* Placeholder for comments count if not available in post object yet */}
+                </div>
+
+                {/* Excerpt */}
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3 mb-4">
                     {post.excerpt}
                 </p>
 
-                <div>
-                    <Link
-                        href={`/blog/${post.slug}`}
-                        className="inline-flex items-center text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
-                    >
-                        Devamını Oku
-                        <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </Link>
-                </div>
+                {/* Read More (Optional, keeping it minimal implies just title link might be enough, but user didn't explicitly ask to remove it. 
+                   The reference image usually has title/excerpt. I'll stick to the reference style which seems clean.) */}
             </div>
         </article>
     );
