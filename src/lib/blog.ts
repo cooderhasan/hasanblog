@@ -12,6 +12,7 @@ const convertPostToBlogType = (post: any): BlogPost => {
         date: post.date.toISOString(),
         excerpt: post.excerpt || '',
         category: post.category?.name || 'Genel',
+        categorySlug: post.category?.slug || 'genel',
         image: post.image || null,
         author: post.author?.name || 'Hasan Durmuş',
         content: post.content,

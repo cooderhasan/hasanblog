@@ -73,7 +73,6 @@ export async function POST(request: NextRequest) {
 
         // Revalidate all pages to reflect changes
         revalidatePath('/', 'layout');
-        revalidatePath('/blog', 'layout');
 
         return NextResponse.json({ success: true, settings });
     } catch (error) {

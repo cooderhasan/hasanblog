@@ -28,26 +28,30 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
             case 'populer':
                 return (
                     <div className="space-y-4">
-                        {popularPosts.map((post, index) => (
-                            <Link key={post.slug} href={`/blog/${post.slug}`} className="flex gap-4 group items-start">
-                                <div className="relative w-20 h-16 shrink-0 rounded overflow-hidden bg-gray-100">
-                                    {post.image && (
+                        {recentPosts.map((post) => (
+                            <Link key={post.slug} href={`/${post.slug}`} className="flex gap-4 group">
+                                <div className="relative w-20 h-20 shrink-0 rounded-md overflow-hidden">
+                                    {post.image ? (
                                         <Image
                                             src={post.image}
                                             alt={post.title}
                                             fill
                                             unoptimized={post.image.startsWith('/uploads/')}
-                                            className="object-cover group-hover:scale-105 transition-transform"
+                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
                                         />
+                                    ) : (
+                                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                            <span className="text-2xl">📷</span>
+                                        </div>
                                     )}
-                                    <div className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-br">
-                                        {index + 1}
-                                    </div>
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-green-600 transition-colors">
+                                    <h4 className="font-medium text-gray-900 group-hover:text-teal-600 transition-colors line-clamp-2 leading-snug">
                                         {post.title}
                                     </h4>
+                                    <span className="text-xs text-gray-500 mt-1 block">
+                                        {new Date(post.date).toLocaleDateString('tr-TR')}
+                                    </span>
                                 </div>
                             </Link>
                         ))}
@@ -57,7 +61,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                 return (
                     <div className="space-y-4">
                         {recentPosts.slice(0, 5).map((post) => (
-                            <Link key={post.slug} href={`/blog/${post.slug}`} className="flex gap-4 group items-start">
+                            <Link key={post.slug} href={`/${post.slug}`} className="flex gap-4 group items-start">
                                 <div className="relative w-20 h-16 shrink-0 rounded overflow-hidden bg-gray-100">
                                     {post.image && (
                                         <Image
@@ -87,7 +91,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                 return (
                     <div className="flex flex-wrap gap-2">
                         {['E-ticaret', 'SEO', 'Pazarlama', 'Sosyal Medya', 'Girişimcilik', 'Yazılım', 'Tasarım'].map(tag => (
-                            <Link key={tag} href={`/blog?q=${tag}`} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded hover:bg-green-600 hover:text-white transition-colors">
+                            <Link key={tag} href={`/?q=${tag}`} className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded hover:bg-green-600 hover:text-white transition-colors">
                                 {tag}
                             </Link>
                         ))}
@@ -105,7 +109,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                 <h3 className="text-lg font-bold text-gray-900 mb-4 border-l-4 border-green-600 pl-3">
                     Ara
                 </h3>
-                <form action="/blog" className="flex flex-col gap-2">
+                <form action="/" className="flex flex-col gap-2">
                     <input
                         type="search"
                         name="q"
@@ -206,7 +210,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                 <div className="space-y-4">
                     {eTicaretPosts.length > 0 ? (
                         eTicaretPosts.map((post) => (
-                            <Link key={post.slug} href={`/blog/${post.slug}`} className="flex gap-4 group items-start">
+                            <Link key={post.slug} href={`/${post.slug}`} className="flex gap-4 group items-start">
                                 <div className="relative w-16 h-16 shrink-0 rounded overflow-hidden bg-gray-100">
                                     {post.image && (
                                         <Image
@@ -218,7 +222,7 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                                     )}
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                    <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-[#2DDE98] transition-colors">
                                         {post.title}
                                     </h4>
                                     <span className="text-xs text-gray-500 mt-1 block">
@@ -240,12 +244,12 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
                 </h3>
                 <div className="space-y-4">
                     {mostCommentedPosts.map((post, index) => (
-                        <Link key={post.slug} href={`/blog/${post.slug}`} className="flex gap-4 group items-center">
+                        <Link key={post.slug} href={`/${post.slug}`} className="flex gap-4 group items-center">
                             <div className="relative w-10 h-10 shrink-0 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-bold text-sm">
                                 {index + 1}
                             </div>
                             <div>
-                                <h4 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-red-500 transition-colors">
+                                <h4 className="text-sm font-medium text-gray-800 line-clamp-2 group-hover:text-[#2DDE98] transition-colors">
                                     {post.title}
                                 </h4>
                                 <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">

@@ -9,7 +9,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Static routes
     const routes = [
         '',
-        '/blog',
         '/hakkimda',
         '/iletisim',
         '/hizmetler',
@@ -23,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog posts
     const posts = await getAllPosts()
     const postRoutes = posts.map((post) => ({
-        url: `${baseUrl}/blog/${post.slug}`,
+        url: `${baseUrl}/${post.slug}`,
         lastModified: new Date(post.date),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
@@ -32,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Categories
     const categories = await prisma.category.findMany()
     const categoryRoutes = categories.map((category) => ({
-        url: `${baseUrl}/blog/kategori/${category.slug}`,
+        url: `${baseUrl}/kategori/${category.slug}`,
         lastModified: new Date(),
         changeFrequency: 'weekly' as const,
         priority: 0.6,

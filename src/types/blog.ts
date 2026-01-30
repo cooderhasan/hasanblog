@@ -6,6 +6,7 @@ export interface BlogPost {
   date: string;
   excerpt: string;
   category: string;
+  categorySlug: string;
   image?: string;
   author: string;
   content: string;

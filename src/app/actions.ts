@@ -78,7 +78,6 @@ export async function createPost(formData: FormData) {
         });
 
         revalidatePath('/admin/posts');
-        revalidatePath('/blog');
         revalidatePath('/');
         isSuccess = true;
     } catch (error) {
@@ -117,7 +116,6 @@ export async function updatePost(id: string, formData: FormData) {
         });
 
         revalidatePath('/admin/posts');
-        revalidatePath('/blog');
         revalidatePath('/');
         isSuccess = true;
     } catch (error) {
@@ -168,7 +166,7 @@ export async function updateCategory(id: string, formData: FormData) {
     });
 
     revalidatePath('/admin/categories');
-    revalidatePath('/blog');
+    revalidatePath('/');
     redirect('/admin/categories');
 }
 
@@ -240,7 +238,7 @@ export async function approveComment(id: string) {
             data: { approved: true }
         });
         revalidatePath('/admin/comments');
-        revalidatePath('/blog'); // Revalidate blog pages to show new comment
+        revalidatePath('/'); // Revalidate home/blog feed
         return { success: true };
     } catch (error) {
         console.error('Approve Comment Error:', error);

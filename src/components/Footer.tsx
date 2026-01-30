@@ -20,7 +20,7 @@ export default async function Footer({ layoutWidth = 'max-w-6xl' }: { layoutWidt
             {posts.length > 0 ? (
                 <>
                     {/* First Post - Featured Style */}
-                    <Link href={`/blog/${posts[0].slug}`} className="group relative h-40 w-full rounded-lg overflow-hidden block mb-2">
+                    <Link href={`/${posts[0].slug}`} className="group relative h-40 w-full rounded-lg overflow-hidden block mb-2">
                         {posts[0].image ? (
                             <Image
                                 src={posts[0].image}
@@ -33,7 +33,7 @@ export default async function Footer({ layoutWidth = 'max-w-6xl' }: { layoutWidt
                             <div className="w-full h-full bg-gray-800" />
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4">
-                            <h4 className="text-white text-sm font-bold leading-tight line-clamp-2 group-hover:text-green-400 transition-colors">
+                            <h4 className="text-white text-sm font-bold leading-tight line-clamp-2 group-hover:text-[#2DDE98] transition-colors">
                                 {posts[0].title}
                             </h4>
                         </div>
@@ -42,11 +42,11 @@ export default async function Footer({ layoutWidth = 'max-w-6xl' }: { layoutWidt
                     {/* Other Posts - List Style */}
                     <div className="flex flex-col gap-3">
                         {posts.slice(1).map((post, idx) => (
-                            <Link key={post.slug} href={`/blog/${post.slug}`} className="flex gap-3 group items-start">
+                            <Link key={post.slug} href={`/${post.slug}`} className="flex gap-3 group items-start">
                                 <div className="shrink-0 w-5 h-5 flex items-center justify-center bg-green-600 text-white text-xs font-bold rounded">
                                     {idx + 1}
                                 </div>
-                                <h4 className="text-gray-400 text-sm leading-snug group-hover:text-white transition-colors line-clamp-2">
+                                <h4 className="text-gray-400 text-sm leading-snug group-hover:text-[#2DDE98] transition-colors line-clamp-2">
                                     {post.title}
                                 </h4>
                             </Link>
@@ -80,8 +80,8 @@ export default async function Footer({ layoutWidth = 'max-w-6xl' }: { layoutWidt
                     <nav>
                         <ul className="flex flex-wrap justify-center md:justify-start gap-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">
                             <li><Link href="/" className="hover:text-white transition-colors">Ana Sayfa</Link></li>
-                            <li><Link href="/blog" className="hover:text-white transition-colors">E-Ticaret</Link></li>
-                            <li><Link href="/blog" className="hover:text-white transition-colors">Pazaryerleri</Link></li>
+                            <li><Link href="/kategori/e-ticaret" className="hover:text-white transition-colors">E-Ticaret</Link></li>
+                            <li><Link href="/kategori/pazaryerleri" className="hover:text-white transition-colors">Pazaryerleri</Link></li>
                             <li><Link href="/hizmetler" className="hover:text-white transition-colors">Hizmetler</Link></li>
                             <li><Link href="/hakkimda" className="hover:text-white transition-colors">Hakkımda</Link></li>
                             <li><Link href="/iletisim" className="hover:text-white transition-colors">İletişim</Link></li>

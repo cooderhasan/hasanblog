@@ -67,7 +67,7 @@ export default async function CommentsPage({ searchParams }: { searchParams: Pro
 
                         {/* Post Link */}
                         <div className="text-sm text-gray-500 mb-3">
-                            Yazı: <a href={`/blog/${comment.post.slug}`} target="_blank" className="text-blue-600 hover:underline">{comment.post.title}</a>
+                            Yazı: <a href={`/${comment.post.slug}`} target="_blank" className="text-blue-600 hover:underline">{comment.post.title}</a>
                         </div>
 
                         {/* Comment Content */}

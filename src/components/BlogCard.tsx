@@ -9,7 +9,7 @@ interface BlogCardProps {
 
 export default function BlogCard({ post }: BlogCardProps) {
     return (
-        <Link href={`/blog/${post.slug}`} className="group block">
+        <Link href={`/${post.slug}`} className="group block">
             <article className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-xl">
                 {/* Image */}
                 {post.image && (
@@ -28,13 +28,18 @@ export default function BlogCard({ post }: BlogCardProps) {
                 <div className="p-6">
                     {/* Category */}
                     <div className="mb-2">
-                        <span className="inline-block px-3 py-1 text-xs font-semibold text-green-600 bg-green-50 rounded-full">
+                        <span className={`inline-block px-3 py-1 text-xs font-semibold text-white rounded-full ${post.category.toLowerCase().includes('pazar')
+                                ? 'bg-[#FF9900]'
+                                : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
+                                    ? 'bg-[#2DDE98]'
+                                    : 'bg-green-600'
+                            }`}>
                             {post.category}
                         </span>
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
+                    <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#2DDE98] transition-colors">
                         {post.title}
                     </h2>
 

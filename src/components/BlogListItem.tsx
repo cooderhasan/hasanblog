@@ -12,7 +12,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
         <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-200 last:border-b-0">
             {/* Image Section */}
             <div className="md:w-5/12 lg:w-1/3 relative h-56 md:h-auto min-h-[220px] rounded-xl overflow-hidden shrink-0 group">
-                <Link href={`/blog/${post.slug}`}>
+                <Link href={`/${post.slug}`}>
                     {post.image ? (
                         <Image
                             src={post.image}
@@ -34,8 +34,13 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                 {/* Category */}
                 <div className="mb-3">
                     <Link
-                        href={`/blog/kategori/${post.category.toLowerCase().replace(/ /g, '-')}`}
-                        className="inline-block px-3 py-1 text-xs font-bold text-white bg-teal-400 rounded-md hover:bg-teal-500 transition-colors uppercase tracking-wide"
+                        href={`/kategori/${post.categorySlug}`}
+                        className={`inline-block px-3 py-1 text-xs font-bold text-white rounded-md transition-colors uppercase tracking-wide ${post.category.toLowerCase().includes('pazar')
+                                ? 'bg-[#FF9900] hover:bg-[#e68a00]'
+                                : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
+                                    ? 'bg-[#2DDE98] hover:bg-[#25b87d]'
+                                    : 'bg-teal-400 hover:bg-teal-500'
+                            }`}
                     >
                         {post.category}
                     </Link>
@@ -43,7 +48,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
 
                 {/* Title */}
                 <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-tight group">
-                    <Link href={`/blog/${post.slug}`} className="hover:text-teal-500 transition-colors">
+                    <Link href={`/${post.slug}`} className="hover:text-[#2DDE98] transition-colors">
                         {post.title}
                     </Link>
                 </h2>
@@ -65,7 +70,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                 {/* Read More */}
                 <div className="mt-auto">
                     <Link
-                        href={`/blog/${post.slug}`}
+                        href={`/${post.slug}`}
                         className="inline-flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors group/link"
                     >
                         Devamını Oku

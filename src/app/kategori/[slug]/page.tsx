@@ -78,8 +78,7 @@ export default async function CategoryPage({
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
-                            { label: 'Blog', href: '/blog' },
-                            { label: categoryName, href: `/blog/kategori/${slug}` },
+                            { label: categoryName, href: `/kategori/${slug}` },
                         ]} />
                     </div>
                     <h1 className="text-3xl md:text-4xl font-bold mb-2">
@@ -107,7 +106,7 @@ export default async function CategoryPage({
                                     <p className="text-gray-600 text-lg mb-4">
                                         Bu kategoride henüz yazı bulunmamaktadır.
                                     </p>
-                                    <Link href="/blog" className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                    <Link href="/" className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                                         Tüm yazılara dön
                                     </Link>
                                 </div>
@@ -120,7 +119,7 @@ export default async function CategoryPage({
                                 {/* Previous Page */}
                                 {page > 1 && (
                                     <Link
-                                        href={`/blog/kategori/${slug}?page=${page - 1}`}
+                                        href={`/kategori/${slug}?page=${page - 1}`}
                                         className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                                     >
                                         &larr; Önceki
@@ -134,7 +133,7 @@ export default async function CategoryPage({
                                     return (
                                         <Link
                                             key={p}
-                                            href={`/blog/kategori/${slug}?page=${p}`}
+                                            href={`/kategori/${slug}?page=${p}`}
                                             className={`px-4 py-2 border rounded-lg transition ${isCurrent
                                                 ? 'bg-blue-600 text-white border-blue-600'
                                                 : 'bg-white border-gray-300 hover:bg-gray-50'
@@ -148,7 +147,7 @@ export default async function CategoryPage({
                                 {/* Next Page */}
                                 {page < totalPages && (
                                     <Link
-                                        href={`/blog/kategori/${slug}?page=${page + 1}`}
+                                        href={`/kategori/${slug}?page=${page + 1}`}
                                         className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                                     >
                                         Sonraki &rarr;

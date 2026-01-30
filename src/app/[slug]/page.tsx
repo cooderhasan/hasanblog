@@ -140,9 +140,8 @@ export default async function BlogPostPage(props: any) {
                         <PageContainer>
                             <Breadcrumb items={[
                                 { label: 'Ana Sayfa', href: '/' },
-                                { label: 'Blog', href: '/blog' },
-                                { label: post.category.name, href: `/blog/kategori/${post.category.slug}` },
-                                { label: post.title, href: `/blog/${post.slug}` },
+                                { label: post.category, href: `/kategori/${post.categorySlug}` },
+                                { label: post.title, href: `/${post.slug}` },
                             ]} />
                         </PageContainer>
                     </div>
@@ -170,9 +169,9 @@ export default async function BlogPostPage(props: any) {
                                     </h1>
 
                                     <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
-                                        <span className="font-medium text-blue-600 mr-4">{post.author.name}</span>
+                                        <span className="font-medium text-blue-600 mr-4">{post.author}</span>
                                         <span className="mr-4">{formatDate(post.date)}</span>
-                                        <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category.name}</span>
+                                        <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
                                     </div>
 
                                     <div
@@ -189,7 +188,7 @@ export default async function BlogPostPage(props: any) {
                                     <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Son Yazılar</h3>
                                     <div className="flex flex-col gap-4">
                                         {recentPosts.map((recent) => (
-                                            <Link key={recent.slug} href={`/blog/${recent.slug}`} className="flex gap-3 group">
+                                            <Link key={recent.slug} href={`/${recent.slug}`} className="flex gap-3 group">
                                                 <div className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden">
                                                     {recent.image ? (
                                                         <Image
@@ -218,25 +217,27 @@ export default async function BlogPostPage(props: any) {
                                 </div>
                             </aside>
                         </div>
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{
-                            __html: JSON.stringify({
-                                '@context': 'https://schema.org',
-                                '@type': 'Article',
-                                headline: post.title,
-                                description: post.excerpt,
-                                image: post.image ? [post.image] : [],
-                                datePublished: post.date,
-                                dateModified: post.date,
-                                author: [{
-                                    '@type': 'Person',
-                                    name: post.author,
-                                    url: 'https://hasandurmus.com'
-                                }]
-                            })
-                        }}
-                />
+                        <script
+                            type="application/ld+json"
+                            dangerouslySetInnerHTML={{
+                                __html: JSON.stringify({
+                                    '@context': 'https://schema.org',
+                                    '@type': 'Article',
+                                    headline: post.title,
+                                    description: post.excerpt,
+                                    image: post.image ? [post.image] : [],
+                                    datePublished: post.date,
+                                    dateModified: post.date,
+                                    author: [{
+                                        '@type': 'Person',
+                                        name: post.author,
+                                        url: 'https://hasandurmus.com'
+                                    }]
+                                })
+                            }}
+                        />
                     </PageContainer>
                 </div>
-                );
+            </div>
+            );
 }

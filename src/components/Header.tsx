@@ -68,12 +68,12 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
                             </Link>
                         </li>
                         <li>
-                            <Link href="/blog/kategori/e-ticaret" className="hover:text-green-600 transition-colors">
+                            <Link href="/kategori/e-ticaret" className="hover:text-green-600 transition-colors">
                                 E-ticaret
                             </Link>
                         </li>
                         <li>
-                            <Link href="/blog/kategori/pazaryerleri" className="hover:text-green-600 transition-colors flex items-center gap-1">
+                            <Link href="/kategori/pazaryerleri" className="hover:text-green-600 transition-colors flex items-center gap-1">
                                 Pazaryerleri
                                 <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                             </Link>
@@ -98,7 +98,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
 
                     {/* Search Bar */}
                     <div className="hidden lg:block w-64">
-                        <form action="/blog" className="flex shadow-sm rounded-md overflow-hidden border border-gray-300">
+                        <form action="/" className="flex shadow-sm rounded-md overflow-hidden border border-gray-300">
                             <input
                                 type="search"
                                 name="q"
@@ -130,7 +130,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
                                 <Link href="/" className="text-green-600" onClick={() => setIsMenuOpen(false)}>Ana Sayfa</Link>
                             </li>
                             <li>
-                                <Link href="/blog/kategori/e-ticaret" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>E-ticaret</Link>
+                                <Link href="/kategori/e-ticaret" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>E-ticaret</Link>
                             </li>
                             <li>
                                 <Link href="/hizmetler" className="text-gray-700" onClick={() => setIsMenuOpen(false)}>Hizmetler</Link>
@@ -140,7 +140,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
                             </li>
                         </ul>
                         <div className="mt-8">
-                            <form action="/blog" className="flex shadow-sm rounded-md overflow-hidden border border-gray-300">
+                            <form action="/" className="flex shadow-sm rounded-md overflow-hidden border border-gray-300">
                                 <input
                                     type="search"
                                     name="q"
