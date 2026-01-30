@@ -24,6 +24,8 @@ export async function GET() {
     }
 }
 
+import { revalidatePath } from 'next/cache';
+
 export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
@@ -64,6 +66,12 @@ export async function POST(request: NextRequest) {
                 layoutWidth: data.layoutWidth || 'max-w-6xl',
             }
         });
+
+
+
+        // Revalidate all pages to reflect changes
+        revalidatePath('/', 'layout');
+        revalidatePath('/blog', 'layout');
 
         return NextResponse.json({ success: true, settings });
     } catch (error) {
