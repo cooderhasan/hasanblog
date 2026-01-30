@@ -9,7 +9,7 @@ interface BlogListItemProps {
 
 export default function BlogListItem({ post }: BlogListItemProps) {
     return (
-        <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-100 last:border-b-0">
+        <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-200 last:border-b-0">
             {/* Image Section */}
             <div className="md:w-5/12 lg:w-1/3 relative h-56 md:h-auto min-h-[220px] rounded-xl overflow-hidden shrink-0 group">
                 <Link href={`/blog/${post.slug}`}>
@@ -62,8 +62,18 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                     {post.excerpt}
                 </p>
 
-                {/* Read More (Optional, keeping it minimal implies just title link might be enough, but user didn't explicitly ask to remove it. 
-                   The reference image usually has title/excerpt. I'll stick to the reference style which seems clean.) */}
+                {/* Read More */}
+                <div className="mt-auto">
+                    <Link
+                        href={`/blog/${post.slug}`}
+                        className="inline-flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors group/link"
+                    >
+                        Devamını Oku
+                        <svg className="w-4 h-4 ml-1 transform group-hover/link:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </Link>
+                </div>
             </div>
         </article>
     );
