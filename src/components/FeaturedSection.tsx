@@ -17,7 +17,7 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
         <section className="mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Large Post */}
-                <div className="lg:col-span-2 relative h-[400px] lg:h-[420px] rounded-xl overflow-hidden group">
+                <div className="lg:col-span-2 relative h-[400px] lg:h-[420px] overflow-hidden group">
                     <Link href={`/${mainPost.slug}`} className="block h-full w-full">
                         {mainPost.image ? (
                             <Image
@@ -56,7 +56,7 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                 {/* Side Posts Stack */}
                 <div className="flex flex-col gap-6">
                     {sidePosts.map((post) => (
-                        <Link key={post.slug} href={`/${post.slug}`} className="flex-1 group relative rounded-xl overflow-hidden block min-h-[150px]">
+                        <Link key={post.slug} href={`/${post.slug}`} className="flex-1 group relative overflow-hidden block min-h-[150px]">
                             {post.image ? (
                                 <Image
                                     src={post.image}
@@ -70,10 +70,10 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                             )}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-4">
                                 <span className={`text-xs font-semibold mb-1 ${post.category.toLowerCase().includes('pazar')
-                                        ? 'text-[#FF9900]'
-                                        : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
-                                            ? 'text-[#2DDE98]'
-                                            : 'text-green-400'
+                                    ? 'text-[#FF9900]'
+                                    : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
+                                        ? 'text-[#2DDE98]'
+                                        : 'text-green-400'
                                     }`}>
                                     {post.category}
                                 </span>

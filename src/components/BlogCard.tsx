@@ -10,7 +10,7 @@ interface BlogCardProps {
 export default function BlogCard({ post }: BlogCardProps) {
     return (
         <Link href={`/${post.slug}`} className="group block">
-            <article className="bg-white rounded-lg shadow-md overflow-hidden transition-all hover:shadow-xl">
+            <article className="bg-white shadow-md overflow-hidden transition-all hover:shadow-xl">
                 {/* Image */}
                 {post.image && (
                     <div className="relative h-48 w-full overflow-hidden">
@@ -29,10 +29,10 @@ export default function BlogCard({ post }: BlogCardProps) {
                     {/* Category */}
                     <div className="mb-2">
                         <span className={`inline-block px-3 py-1 text-xs font-semibold text-white rounded-full ${post.category.toLowerCase().includes('pazar')
-                                ? 'bg-[#FF9900]'
-                                : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
-                                    ? 'bg-[#2DDE98]'
-                                    : 'bg-green-600'
+                            ? 'bg-[#FF9900]'
+                            : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
+                                ? 'bg-[#2DDE98]'
+                                : 'bg-green-600'
                             }`}>
                             {post.category}
                         </span>

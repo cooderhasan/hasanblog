@@ -11,7 +11,7 @@ export default function BlogListItem({ post }: BlogListItemProps) {
     return (
         <article className="flex flex-col md:flex-row gap-6 pb-8 border-b border-gray-200 last:border-b-0">
             {/* Image Section */}
-            <div className="md:w-5/12 lg:w-1/3 relative h-56 md:h-auto min-h-[220px] rounded-xl overflow-hidden shrink-0 group">
+            <div className="md:w-5/12 lg:w-1/3 relative h-56 md:h-auto min-h-[220px] overflow-hidden shrink-0 group">
                 <Link href={`/${post.slug}`}>
                     {post.image ? (
                         <Image
