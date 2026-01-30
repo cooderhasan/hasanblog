@@ -4,10 +4,25 @@ import { format } from 'date-fns';
 import { tr } from 'date-fns/locale';
 import DeletePostButton from '@/components/admin/DeletePostButton';
 
+import PostFilter from '@/components/admin/PostFilter';
+
 export const dynamic = 'force-dynamic';
 
-export default async function PostsPage() {
+export default async function PostsPage(props: {
+    searchParams?: Promise<{
+        q?: string;
+    }>;
+}) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.q || '';
+
     const posts = await prisma.post.findMany({
+        where: {
+            title: {
+                contains: query,
+                mode: 'insensitive',
+            },
+        },
         include: {
             category: true,
             author: true,
@@ -31,6 +46,8 @@ export default async function PostsPage() {
                     Yeni Ekle
                 </Link>
             </div>
+
+            <PostFilter />
 
             <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="overflow-x-auto">

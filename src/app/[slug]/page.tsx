@@ -239,5 +239,6 @@ export default async function BlogPostPage(props: any) {
                     </PageContainer>
                 </div>
             </div>
-            );
+        </div>
+    );
 }
