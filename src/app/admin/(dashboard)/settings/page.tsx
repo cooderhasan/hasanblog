@@ -20,6 +20,7 @@ interface SiteSettings {
     customFooterCode: string | null;
     postsPerPage: number;
     layoutWidth: string;
+    logoHeight: number;
 }
 
 export default function SettingsPage() {
@@ -66,7 +67,7 @@ export default function SettingsPage() {
         }
     };
 
-    const updateField = (field: keyof SiteSettings, value: string) => {
+    const updateField = (field: keyof SiteSettings, value: string | number) => {
         setSettings(prev => prev ? { ...prev, [field]: value } : null);
     };
 
@@ -144,6 +145,17 @@ export default function SettingsPage() {
                                             value={settings?.logoUrl || ''}
                                             onChange={(url) => updateField('logoUrl', url)}
                                         />
+                                        <div className="mt-4">
+                                            <label className="block text-xs font-medium text-gray-500 mb-1">Logo Yüksekliği (px)</label>
+                                            <input
+                                                type="number"
+                                                min="20"
+                                                max="200"
+                                                value={settings?.logoHeight || 48}
+                                                onChange={(e) => updateField('logoHeight', parseInt(e.target.value))}
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 text-sm"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div>

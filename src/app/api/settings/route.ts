@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
                 customFooterCode: data.customFooterCode,
                 postsPerPage: parseInt(data.postsPerPage) || 10,
                 layoutWidth: data.layoutWidth || 'max-w-6xl',
+                logoHeight: parseInt(data.logoHeight) || 48,
             },
             create: {
                 id: 'main',
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
                 customFooterCode: data.customFooterCode,
                 postsPerPage: parseInt(data.postsPerPage) || 10,
                 layoutWidth: data.layoutWidth || 'max-w-6xl',
+                logoHeight: parseInt(data.logoHeight) || 48,
             }
         });
 

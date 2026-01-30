@@ -73,6 +73,7 @@ model SiteSettings {
   faviconUrl         String?
   postsPerPage       Int     @default(10)
   layoutWidth        String  @default("max-w-6xl")
+  logoHeight         Int     @default(48)
   
   // SEO
   metaTitle          String?

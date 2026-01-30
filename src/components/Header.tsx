@@ -7,9 +7,10 @@ import Image from 'next/image';
 interface HeaderProps {
     logoUrl?: string | null;
     layoutWidth?: string;
+    logoHeight?: number;
 }
 
-export default function Header({ logoUrl, layoutWidth = 'max-w-6xl' }: HeaderProps) {
+export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight = 48 }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -21,7 +22,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl' }: HeaderPro
                     <div className="flex items-center justify-between w-full lg:w-auto">
                         <Link href="/" className="flex flex-col z-20">
                             {logoUrl ? (
-                                <div className="relative h-12 w-48">
+                                <div className="relative w-auto" style={{ height: `${logoHeight}px`, minWidth: '150px' }}>
                                     <Image
                                         src={logoUrl}
                                         alt="Hasan Durmuş"

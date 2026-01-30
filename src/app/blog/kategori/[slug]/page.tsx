@@ -27,6 +27,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
+import PageContainer from '@/components/PageContainer';
+
 export default async function CategoryPage({
     params,
     searchParams,
@@ -72,7 +74,7 @@ export default async function CategoryPage({
         <div className="bg-gray-50 min-h-screen">
             {/* Header */}
             <div className="bg-blue-900 text-white py-12">
-                <div className="container mx-auto px-4">
+                <PageContainer>
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -86,10 +88,10 @@ export default async function CategoryPage({
                     <p className="text-blue-200">
                         Bu kategoride toplam {totalPosts} yazı listeleniyor
                     </p>
-                </div>
+                </PageContainer>
             </div>
 
-            <div className="container mx-auto px-4 py-8">
+            <PageContainer className="py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
@@ -161,7 +163,7 @@ export default async function CategoryPage({
                         <Sidebar recentPosts={recentPostsForSidebar} />
                     </div>
                 </div>
-            </div>
+            </PageContainer>
         </div>
     );
 }

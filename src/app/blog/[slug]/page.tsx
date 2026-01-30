@@ -134,120 +134,109 @@ export default async function BlogPostPage(props: any) {
         <div className="bg-white">
             {/* Simple Header */}
             <div className="bg-blue-900 text-white py-12">
-                <PageContainer>
-                    {/* Breadcrumb */}
-                    <div className="mb-6">
-                        <Breadcrumb items={[
-                            { label: 'Ana Sayfa', href: '/' },
-                            { label: 'Blog', href: '/blog' },
-                            { label: post.category, href: `/blog/kategori/${post.category.toLowerCase().replace(/ /g, '-')}` },
-                            { label: post.title, href: `/blog/${post.slug}` },
-                        ]} />
+                <div className="bg-gray-50 min-h-screen">
+                    {/* Header / Breadcrumb Area */}
+                    <div className="bg-blue-900 text-white py-8">
+                        <PageContainer>
+                            <Breadcrumb items={[
+                                { label: 'Ana Sayfa', href: '/' },
+                                { label: 'Blog', href: '/blog' },
+                                { label: post.category.name, href: `/blog/kategori/${post.category.slug}` },
+                                { label: post.title, href: `/blog/${post.slug}` },
+                            ]} />
+                        </PageContainer>
                     </div>
 
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 max-w-4xl">
-                        {post.title}
-                    </h1>
-                    <div className="flex flex-wrap items-center gap-4 text-blue-100">
-                        <span>{post.author}</span>
-                        <span>{formatDate(post.date)}</span>
-                        <span>{post.category}</span>
-                    </div>
-                </PageContainer>
-            </div>
+                    <PageContainer className="py-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {/* Main Content */}
+                            <article className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
+                                {/* Featured Image */}
+                                {post.image ? (
+                                    <div className="relative h-64 md:h-96 w-full">
+                                        <Image
+                                            src={post.image}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover"
+                                            priority
+                                        />
+                                    </div>
+                                ) : null}
 
-            <PageContainer className="py-12 text-gray-900">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    {/* Left Column - Main Article */}
-                    <article className="lg:col-span-2">
-                        {/* Image */}
-                        {post.image && (
-                            <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden">
-                                <Image
-                                    src={post.image}
-                                    alt={post.title}
-                                    fill
-                                    unoptimized={post.image.startsWith('/uploads/')}
-                                    className="object-cover"
-                                    priority
-                                />
-                            </div>
-                        )}
+                                <div className="p-6 md:p-8">
+                                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
+                                        {post.title}
+                                    </h1>
 
-                        {/* Table of Contents */}
-                        <TableOfContents toc={toc} />
+                                    <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
+                                        <span className="font-medium text-blue-600 mr-4">{post.author.name}</span>
+                                        <span className="mr-4">{formatDate(post.date)}</span>
+                                        <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category.name}</span>
+                                    </div>
 
-                        <div
-                            className="prose prose-lg max-w-none prose-slate prose-headings:text-gray-900 prose-p:text-gray-800 prose-li:text-gray-800 prose-strong:text-gray-900"
-                            dangerouslySetInnerHTML={{ __html: htmlWithIds }}
-                        />
-
-                        {/* Comments Section */}
-                        <div id="comments" className="mt-16 pt-12 border-t border-gray-200">
-                            <CommentList comments={comments} />
-                            <CommentForm postId={post.id} />
-                        </div>
-
-                        {/* Related Posts */}
-                        {relatedPosts.length > 0 && (
-                            <div className="mt-16 border-t pt-12">
-                                <h2 className="text-2xl font-bold mb-8">İlginizi Çekebilir</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {relatedPosts.map((relatedPost) => (
-                                        <Link
-                                            key={relatedPost.slug}
-                                            href={`/blog/${relatedPost.slug}`}
-                                            className="group"
-                                        >
-                                            {relatedPost.image && (
-                                                <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
-                                                    <Image
-                                                        src={relatedPost.image}
-                                                        alt={relatedPost.title}
-                                                        fill
-                                                        unoptimized={relatedPost.image.startsWith('/uploads/')}
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                    />
-                                                </div>
-                                            )}
-                                            <h3 className="font-bold text-lg group-hover:text-blue-600 transition-colors">
-                                                {relatedPost.title}
-                                            </h3>
-                                        </Link>
-                                    ))}
+                                    <div
+                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-800 prose-p:text-gray-600"
+                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                    />
                                 </div>
-                            </div>
-                        )}
-                    </article>
+                            </article>
 
-                    {/* Right Column - Sidebar */}
-                    <aside className="lg:col-span-1">
-                        <div className="sticky top-8">
-                            <Sidebar recentPosts={recentPosts} />
+                            {/* Sidebar */}
+                            <aside className="lg:col-span-1 space-y-8">
+                                {/* Sidebar content */}
+                                <div className="bg-white p-6 rounded-lg shadow-sm sticky top-4">
+                                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Son Yazılar</h3>
+                                    <div className="flex flex-col gap-4">
+                                        {recentPosts.map((recent) => (
+                                            <Link key={recent.slug} href={`/blog/${recent.slug}`} className="flex gap-3 group">
+                                                <div className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden">
+                                                    {recent.image ? (
+                                                        <Image
+                                                            src={recent.image}
+                                                            alt={recent.title}
+                                                            fill
+                                                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                                            <span className="text-xs text-gray-400">No Img</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-medium text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                                        {recent.title}
+                                                    </h4>
+                                                    <span className="text-xs text-gray-400 mt-1 block">
+                                                        {formatDate(recent.date)}
+                                                    </span>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </aside>
                         </div>
-                    </aside>
-                </div>
-
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'Article',
-                            headline: post.title,
-                            description: post.excerpt,
-                            image: post.image ? [post.image] : [],
-                            datePublished: post.date,
-                            dateModified: post.date,
-                            author: [{
-                                '@type': 'Person',
-                                name: post.author,
-                                url: 'https://hasandurmus.com'
-                            }]
-                        })
-                    }}
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{
+                            __html: JSON.stringify({
+                                '@context': 'https://schema.org',
+                                '@type': 'Article',
+                                headline: post.title,
+                                description: post.excerpt,
+                                image: post.image ? [post.image] : [],
+                                datePublished: post.date,
+                                dateModified: post.date,
+                                author: [{
+                                    '@type': 'Person',
+                                    name: post.author,
+                                    url: 'https://hasandurmus.com'
+                                }]
+                            })
+                        }}
                 />
-            </PageContainer>
-        </div>
-    );
+                    </PageContainer>
+                </div>
+                );
 }
