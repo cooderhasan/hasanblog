@@ -71,6 +71,7 @@ model SiteSettings {
   siteDescription    String?
   logoUrl            String?
   faviconUrl         String?
+  postsPerPage       Int     @default(10)
   
   // SEO
   metaTitle          String?

@@ -42,6 +42,9 @@ export async function POST(request: NextRequest) {
         // Return public URL
         const url = `/uploads/${filename}`;
 
+        console.log(`File saved to: ${filepath}`);
+        console.log(`Public URL: ${url}`);
+
         return NextResponse.json({ success: true, url });
     } catch (error) {
         console.error('Upload error:', error);

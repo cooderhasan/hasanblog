@@ -18,6 +18,7 @@ interface SiteSettings {
     facebookPixelId: string | null;
     customHeadCode: string | null;
     customFooterCode: string | null;
+    postsPerPage: number;
 }
 
 export default function SettingsPage() {
@@ -104,6 +105,19 @@ export default function SettingsPage() {
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
+                    </div>
+
+                    <div className="mt-6 border-t pt-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Anasayfa Yazı Limiti</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="50"
+                            value={settings?.postsPerPage || 10}
+                            onChange={(e) => updateField('postsPerPage', e.target.value)}
+                            className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Anasayfada listelenecek toplam blog yazısı sayısı.</p>
                     </div>
                 </section>
 

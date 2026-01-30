@@ -2,9 +2,13 @@ import FeaturedSection from '@/components/FeaturedSection';
 import BlogListItem from '@/components/BlogListItem';
 import Sidebar from '@/components/Sidebar';
 import { getRecentPosts } from '@/lib/blog';
+import prisma from '@/lib/prisma';
 
 export default async function Home() {
-  const recentPosts = await getRecentPosts(10); // Fetch more posts to show in list + sidebar
+  const settings = await prisma.siteSettings.findUnique({ where: { id: 'main' } });
+  const postLimit = settings?.postsPerPage || 10;
+
+  const recentPosts = await getRecentPosts(postLimit); // Fetch more posts to show in list + sidebar
 
   // Separate posts for different sections
   const featuredPosts = recentPosts.slice(0, 4); // 1 main + 3 side

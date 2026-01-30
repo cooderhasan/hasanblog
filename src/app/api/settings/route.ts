@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
                 facebookPixelId: data.facebookPixelId,
                 customHeadCode: data.customHeadCode,
                 customFooterCode: data.customFooterCode,
+                postsPerPage: parseInt(data.postsPerPage) || 10,
             },
             create: {
                 id: 'main',
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
                 facebookPixelId: data.facebookPixelId,
                 customHeadCode: data.customHeadCode,
                 customFooterCode: data.customFooterCode,
+                postsPerPage: parseInt(data.postsPerPage) || 10,
             }
         });
 
