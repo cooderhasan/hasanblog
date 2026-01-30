@@ -9,7 +9,8 @@ import Pagination from '@/components/Pagination'; // New import
 export default async function Home(props: { searchParams?: Promise<{ page?: string }> }) {
   const searchParams = await props.searchParams;
   const currentPage = Number(searchParams?.page) || 1;
-  const limit = 11; // User requested 11 items per page
+  const settings = await prisma.siteSettings.findUnique({ where: { id: 'main' } });
+  const limit = settings?.postsPerPage || 11; // Use setting or default to 11
 
   // Fetch posts with pagination
   const { posts, totalPages } = await getPosts({ page: currentPage, limit });
