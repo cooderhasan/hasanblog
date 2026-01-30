@@ -17,7 +17,7 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
         <section className="mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Large Post */}
-                <div className="lg:col-span-2 relative h-[400px] lg:h-[500px] rounded-xl overflow-hidden group">
+                <div className="lg:col-span-2 relative h-[400px] lg:h-[420px] rounded-xl overflow-hidden group">
                     <Link href={`/blog/${mainPost.slug}`} className="block h-full w-full">
                         {mainPost.image ? (
                             <Image

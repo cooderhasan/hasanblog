@@ -133,7 +133,7 @@ export default async function BlogPostPage(props: any) {
         <div className="bg-white">
             {/* Simple Header */}
             <div className="bg-blue-900 text-white py-12">
-                <div className="container mx-auto px-4">
+                <div className="max-w-6xl mx-auto px-4">
                     {/* Breadcrumb */}
                     <div className="mb-6">
                         <Breadcrumb items={[
@@ -155,7 +155,7 @@ export default async function BlogPostPage(props: any) {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-12 text-gray-900">
+            <div className="max-w-6xl mx-auto px-4 py-12 text-gray-900">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                     {/* Left Column - Main Article */}
                     <article className="lg:col-span-2">

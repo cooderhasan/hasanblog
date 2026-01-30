@@ -10,7 +10,7 @@ export default function ServicesPage() {
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-blue-900 text-white py-12">
-                <div className="container mx-auto px-4">
+                <div className="max-w-6xl mx-auto px-4">
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -21,7 +21,7 @@ export default function ServicesPage() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-12">
+            <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Service 1 */}
                     <div className="p-6 border rounded-lg hover:shadow-lg transition-shadow">

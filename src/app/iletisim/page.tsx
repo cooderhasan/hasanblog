@@ -10,7 +10,7 @@ export default function ContactPage() {
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-blue-900 text-white py-12">
-                <div className="container mx-auto px-4">
+                <div className="max-w-6xl mx-auto px-4">
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -21,7 +21,7 @@ export default function ContactPage() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-12">
+            <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="max-w-2xl mx-auto">
                     <p className="text-lg text-gray-700 mb-8 text-center">
                         Projeleriniz veya danışmanlık talepleriniz için aşağıdaki formu doldurarak bana ulaşabilirsiniz.

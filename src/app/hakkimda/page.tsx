@@ -9,7 +9,7 @@ export default function AboutPage() {
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-blue-900 text-white py-12">
-                <div className="container mx-auto px-4">
+                <div className="max-w-6xl mx-auto px-4">
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -20,7 +20,7 @@ export default function AboutPage() {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-12">
+            <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="prose lg:prose-xl max-w-4xl mx-auto">
                     <p className="lead">
                         Merhaba, ben Hasan Durmuş. E-ticaret ve dijital pazarlama alanında 10 yılı aşkın süredir çalışıyorum.

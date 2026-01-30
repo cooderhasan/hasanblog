@@ -13,7 +13,7 @@ export default function Header({ logoUrl }: HeaderProps) {
 
     return (
         <header className="bg-white border-b-2 border-green-500 relative">
-            <nav className="container mx-auto px-4 py-4">
+            <nav className="max-w-6xl mx-auto px-4 py-4">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
 
                     {/* Logo Area */}

@@ -16,7 +16,7 @@ export default async function Home() {
 
   return (
     <div className="bg-white min-h-screen py-8">
-      <div className="container mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-4">
 
         {/* Featured Section */}
         <FeaturedSection posts={featuredPosts} />

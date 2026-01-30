@@ -63,7 +63,7 @@ export default async function Footer() {
         <footer className="bg-[#111] text-gray-300">
             {/* Top Section - Featured Categories */}
             <div className="border-b border-gray-800">
-                <div className="container mx-auto px-4 py-12">
+                <div className="max-w-6xl mx-auto px-4 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {renderColumn('E-TİCARET', eTicaretPosts)}
                         {renderColumn('PAZARYERLERİ', pazarYeriPosts)}
@@ -74,7 +74,7 @@ export default async function Footer() {
 
             {/* Bottom Section - Navigation & Copyright */}
             <div className="bg-black py-6">
-                <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
 
                     {/* Bottom Nav */}
                     <nav>
