@@ -1,5 +1,6 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { Metadata } from 'next';
+import PageContainer from '@/components/PageContainer';
 
 export const metadata: Metadata = {
     title: 'Hizmetler - Hasan Durmuş',
@@ -10,7 +11,7 @@ export default function ServicesPage() {
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-blue-900 text-white py-12">
-                <div className="max-w-6xl mx-auto px-4">
+                <PageContainer>
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -18,10 +19,10 @@ export default function ServicesPage() {
                         ]} />
                     </div>
                     <h1 className="text-4xl font-bold mb-4">Hizmetler</h1>
-                </div>
+                </PageContainer>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-12">
+            <PageContainer className="py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Service 1 */}
                     <div className="p-6 border rounded-lg hover:shadow-lg transition-shadow">
@@ -47,7 +48,7 @@ export default function ServicesPage() {
                         </p>
                     </div>
                 </div>
-            </div>
+            </PageContainer>
         </div>
     );
 }

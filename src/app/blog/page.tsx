@@ -3,6 +3,7 @@ import BlogListItem from '@/components/BlogListItem';
 import Sidebar from '@/components/Sidebar';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getPosts, getRecentPosts } from '@/lib/blog';
+import PageContainer from '@/components/PageContainer';
 
 export const metadata = {
     title: 'Blog - Tüm Yazılar',
@@ -31,7 +32,7 @@ export default async function BlogPage({
         <div className="bg-gray-50 min-h-screen">
             {/* Header */}
             <div className="bg-blue-900 text-white py-12">
-                <div className="max-w-6xl mx-auto px-4">
+                <PageContainer>
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -44,10 +45,10 @@ export default async function BlogPage({
                     <p className="text-blue-200">
                         E-ticaret, SEO ve dijital pazarlama hakkında en güncel {totalPosts} içerik
                     </p>
-                </div>
+                </PageContainer>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-8">
+            <PageContainer className="py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
@@ -116,7 +117,7 @@ export default async function BlogPage({
                         <Sidebar recentPosts={recentPostsForSidebar} />
                     </div>
                 </div>
-            </div>
+            </PageContainer>
         </div>
     );
 }

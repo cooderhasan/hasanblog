@@ -16,12 +16,12 @@ export default async function LayoutWrapper({ children }: { children: React.Reac
 
     const publicLayout = (
         <>
-            <Header logoUrl={settings?.logoUrl} />
+            <Header logoUrl={settings?.logoUrl} layoutWidth={settings?.layoutWidth} />
             <main className="min-h-screen">
                 {children}
             </main>
             <WhatsappButton />
-            <Footer />
+            <Footer layoutWidth={settings?.layoutWidth} />
         </>
     );
 

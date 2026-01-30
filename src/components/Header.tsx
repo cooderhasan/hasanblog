@@ -6,14 +6,15 @@ import Image from 'next/image';
 
 interface HeaderProps {
     logoUrl?: string | null;
+    layoutWidth?: string;
 }
 
-export default function Header({ logoUrl }: HeaderProps) {
+export default function Header({ logoUrl, layoutWidth = 'max-w-6xl' }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
         <header className="bg-white border-b-2 border-green-500 relative">
-            <nav className="max-w-6xl mx-auto px-4 py-4">
+            <nav className={`${layoutWidth} mx-auto px-4 py-4`}>
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
 
                     {/* Logo Area */}

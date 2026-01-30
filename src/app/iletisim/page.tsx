@@ -1,5 +1,6 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import { Metadata } from 'next';
+import PageContainer from '@/components/PageContainer';
 
 export const metadata: Metadata = {
     title: 'İletişim - Hasan Durmuş',
@@ -10,7 +11,7 @@ export default function ContactPage() {
     return (
         <div className="bg-white min-h-screen">
             <div className="bg-blue-900 text-white py-12">
-                <div className="max-w-6xl mx-auto px-4">
+                <PageContainer>
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: 'Ana Sayfa', href: '/' },
@@ -18,10 +19,10 @@ export default function ContactPage() {
                         ]} />
                     </div>
                     <h1 className="text-4xl font-bold mb-4">İletişim</h1>
-                </div>
+                </PageContainer>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-12">
+            <PageContainer className="py-12">
                 <div className="max-w-2xl mx-auto">
                     <p className="text-lg text-gray-700 mb-8 text-center">
                         Projeleriniz veya danışmanlık talepleriniz için aşağıdaki formu doldurarak bana ulaşabilirsiniz.
@@ -45,7 +46,7 @@ export default function ContactPage() {
                         </button>
                     </form>
                 </div>
-            </div>
+            </PageContainer>
         </div>
     );
 }

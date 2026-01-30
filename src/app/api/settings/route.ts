@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
                 customHeadCode: data.customHeadCode,
                 customFooterCode: data.customFooterCode,
                 postsPerPage: parseInt(data.postsPerPage) || 10,
+                layoutWidth: data.layoutWidth || 'max-w-6xl',
             },
             create: {
                 id: 'main',
@@ -60,6 +61,7 @@ export async function POST(request: NextRequest) {
                 customHeadCode: data.customHeadCode,
                 customFooterCode: data.customFooterCode,
                 postsPerPage: parseInt(data.postsPerPage) || 10,
+                layoutWidth: data.layoutWidth || 'max-w-6xl',
             }
         });
 

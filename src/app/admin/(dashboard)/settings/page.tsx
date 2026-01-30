@@ -19,6 +19,7 @@ interface SiteSettings {
     customHeadCode: string | null;
     customFooterCode: string | null;
     postsPerPage: number;
+    layoutWidth: string;
 }
 
 export default function SettingsPage() {
@@ -118,6 +119,23 @@ export default function SettingsPage() {
                             className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                         />
                         <p className="text-xs text-gray-500 mt-1">Anasayfada listelenecek toplam blog yazısı sayısı.</p>
+                    </div>
+
+                    <div className="mt-6 border-t pt-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Sayfa Genişliği</label>
+                        <select
+                            value={settings?.layoutWidth || 'max-w-6xl'}
+                            onChange={(e) => updateField('layoutWidth', e.target.value)}
+                            className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                            <option value="max-w-4xl">Dar (max-w-4xl)</option>
+                            <option value="max-w-5xl">Orta (max-w-5xl)</option>
+                            <option value="max-w-6xl">Normal (max-w-6xl - Varsayılan)</option>
+                            <option value="max-w-7xl">Geniş (max-w-7xl)</option>
+                            <option value="max-w-full">Tam Genişlik (Full)</option>
+                            <option value="container">Container (Standart)</option>
+                        </select>
+                        <p className="text-xs text-gray-500 mt-1">Sitenin genel içerik genişliğini buradan ayarlayabilirsiniz.</p>
                     </div>
                 </section>
 

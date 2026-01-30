@@ -3,6 +3,7 @@ import BlogListItem from '@/components/BlogListItem';
 import Sidebar from '@/components/Sidebar';
 import { getRecentPosts } from '@/lib/blog';
 import prisma from '@/lib/prisma';
+import PageContainer from '@/components/PageContainer';
 
 export default async function Home() {
   const settings = await prisma.siteSettings.findUnique({ where: { id: 'main' } });
@@ -16,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className="bg-white min-h-screen py-8">
-      <div className="max-w-6xl mx-auto px-4">
+      <PageContainer>
 
         {/* Featured Section */}
         <FeaturedSection posts={featuredPosts} />
@@ -47,7 +48,7 @@ export default async function Home() {
           </div>
         </div>
 
-      </div>
+      </PageContainer>
     </div>
   );
 }

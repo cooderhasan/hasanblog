@@ -12,6 +12,7 @@ import { addHeadingIds } from '@/lib/addHeadingIds';
 import CommentList from '@/components/CommentList';
 import CommentForm from '@/components/CommentForm';
 import prisma from '@/lib/prisma';
+import PageContainer from '@/components/PageContainer';
 
 export async function generateStaticParams() {
     try {
@@ -133,7 +134,7 @@ export default async function BlogPostPage(props: any) {
         <div className="bg-white">
             {/* Simple Header */}
             <div className="bg-blue-900 text-white py-12">
-                <div className="max-w-6xl mx-auto px-4">
+                <PageContainer>
                     {/* Breadcrumb */}
                     <div className="mb-6">
                         <Breadcrumb items={[
@@ -152,10 +153,10 @@ export default async function BlogPostPage(props: any) {
                         <span>{formatDate(post.date)}</span>
                         <span>{post.category}</span>
                     </div>
-                </div>
+                </PageContainer>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-12 text-gray-900">
+            <PageContainer className="py-12 text-gray-900">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                     {/* Left Column - Main Article */}
                     <article className="lg:col-span-2">
@@ -246,7 +247,7 @@ export default async function BlogPostPage(props: any) {
                         })
                     }}
                 />
-            </div>
+            </PageContainer>
         </div>
     );
 }
