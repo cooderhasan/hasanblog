@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
 
+import { usePathname } from 'next/navigation';
+
 interface HeaderProps {
     logoUrl?: string | null;
     layoutWidth?: string;
@@ -12,6 +14,16 @@ interface HeaderProps {
 
 export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight = 48 }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    const getLinkClass = (path: string) => {
+        const isActive = pathname === path;
+        const baseClass = "px-3 py-1.5 rounded transition-colors block text-center"; // block added for structure, text-center for alignment if needed
+        const activeClass = "bg-blue-600 text-white";
+        const inactiveClass = "text-gray-700 hover:bg-blue-600 hover:text-white";
+
+        return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
+    };
 
     return (
         <header className="bg-white border-b-2 border-green-500 relative">
@@ -61,36 +73,36 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
                     </div>
 
                     {/* Desktop Menu */}
-                    <ul className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-gray-700">
+                    <ul className="hidden lg:flex items-center gap-4 text-[15px] font-medium">
                         <li>
-                            <Link href="/" className="bg-blue-500 text-white px-3 py-1.5 rounded hover:bg-blue-600 transition-colors">
+                            <Link href="/" className={getLinkClass('/')}>
                                 Ana Sayfa
                             </Link>
                         </li>
                         <li>
-                            <Link href="/kategori/e-ticaret" className="hover:text-green-600 transition-colors">
+                            <Link href="/kategori/e-ticaret" className={getLinkClass('/kategori/e-ticaret')}>
                                 E-ticaret
                             </Link>
                         </li>
                         <li>
-                            <Link href="/kategori/pazaryerleri" className="hover:text-green-600 transition-colors flex items-center gap-1">
+                            <Link href="/kategori/pazaryerleri" className={`${getLinkClass('/kategori/pazaryerleri')} flex items-center gap-1 group`}>
                                 Pazaryerleri
-                                <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                <svg className={`w-3 h-3 ${pathname === '/kategori/pazaryerleri' ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                             </Link>
                         </li>
                         <li>
-                            <Link href="/hizmetler" className="hover:text-green-600 transition-colors flex items-center gap-1">
+                            <Link href="/hizmetler" className={`${getLinkClass('/hizmetler')} flex items-center gap-1 group`}>
                                 Hizmetler
-                                <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                <svg className={`w-3 h-3 ${pathname === '/hizmetler' ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                             </Link>
                         </li>
                         <li>
-                            <Link href="/hakkimda" className="hover:text-green-600 transition-colors">
+                            <Link href="/hakkimda" className={getLinkClass('/hakkimda')}>
                                 Hakkımda
                             </Link>
                         </li>
                         <li>
-                            <Link href="/iletisim" className="hover:text-green-600 transition-colors">
+                            <Link href="/iletisim" className={getLinkClass('/iletisim')}>
                                 İletişim
                             </Link>
                         </li>

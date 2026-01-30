@@ -36,10 +36,10 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                     <Link
                         href={`/kategori/${post.categorySlug}`}
                         className={`inline-block px-3 py-1 text-xs font-bold text-white rounded-md transition-colors uppercase tracking-wide ${post.category.toLowerCase().includes('pazar')
-                                ? 'bg-[#FF9900] hover:bg-[#e68a00]'
-                                : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
-                                    ? 'bg-[#2DDE98] hover:bg-[#25b87d]'
-                                    : 'bg-teal-400 hover:bg-teal-500'
+                            ? 'bg-[#FF9900] hover:bg-[#e68a00]'
+                            : post.category.toLowerCase().includes('e-ticaret') || post.category.toLowerCase().includes('eticaret')
+                                ? 'bg-[#2DDE98] hover:bg-[#25b87d]'
+                                : 'bg-teal-400 hover:bg-teal-500'
                             }`}
                     >
                         {post.category}
@@ -68,10 +68,10 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                 </p>
 
                 {/* Read More */}
-                <div className="mt-auto">
+                <div className="mt-auto flex justify-end">
                     <Link
                         href={`/${post.slug}`}
-                        className="inline-flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors group/link"
+                        className="inline-flex items-center text-sm font-semibold text-[#2DDE98] hover:text-[#25b87d] transition-colors group/link"
                     >
                         Devamını Oku
                         <svg className="w-4 h-4 ml-1 transform group-hover/link:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
