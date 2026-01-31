@@ -44,7 +44,7 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2">
             {/* Main Content Box */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+            <div className="bg-white shadow-sm border border-gray-100 p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 {mainListPosts.length > 0 ? (
                   <>

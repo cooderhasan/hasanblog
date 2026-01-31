@@ -54,9 +54,9 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                 </div>
 
                 {/* Side Posts Stack */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 h-[400px] lg:h-[420px]">
                     {sidePosts.map((post) => (
-                        <Link key={post.slug} href={`/${post.slug}`} className="flex-1 group relative overflow-hidden block min-h-[150px]">
+                        <Link key={post.slug} href={`/${post.slug}`} className="flex-1 group relative overflow-hidden block">
                             {post.image ? (
                                 <Image
                                     src={post.image}
