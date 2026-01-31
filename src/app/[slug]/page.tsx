@@ -133,111 +133,111 @@ export default async function BlogPostPage(props: any) {
     return (
         <div className="bg-white">
             {/* Simple Header */}
-            <div className="bg-blue-900 text-white py-12">
-                <div className="bg-gray-50 min-h-screen">
-                    {/* Header / Breadcrumb Area */}
-                    <div className="bg-blue-900 text-white py-8">
-                        <PageContainer>
-                            <Breadcrumb items={[
-                                { label: 'Ana Sayfa', href: '/' },
-                                { label: post.category, href: `/kategori/${post.categorySlug}` },
-                                { label: post.title, href: `/${post.slug}` },
-                            ]} />
-                        </PageContainer>
-                    </div>
-
-                    <PageContainer className="py-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Main Content */}
-                            <article className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
-                                {/* Featured Image */}
-                                {post.image ? (
-                                    <div className="relative h-64 md:h-96 w-full">
-                                        <Image
-                                            src={post.image}
-                                            alt={post.title}
-                                            fill
-                                            className="object-cover"
-                                            priority
-                                        />
-                                    </div>
-                                ) : null}
-
-                                <div className="p-6 md:p-8">
-                                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
-                                        {post.title}
-                                    </h1>
-
-                                    <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
-                                        <span className="font-medium text-blue-600 mr-4">{post.author}</span>
-                                        <span className="mr-4">{formatDate(post.date)}</span>
-                                        <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
-                                    </div>
-
-                                    <div
-                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-800 prose-p:text-gray-600"
-                                        dangerouslySetInnerHTML={{ __html: post.content }}
-                                    />
-                                </div>
-                            </article>
-
-                            {/* Sidebar */}
-                            <aside className="lg:col-span-1 space-y-8">
-                                {/* Sidebar content */}
-                                <div className="bg-white p-6 rounded-lg shadow-sm sticky top-4">
-                                    <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Son Yazılar</h3>
-                                    <div className="flex flex-col gap-4">
-                                        {recentPosts.map((recent) => (
-                                            <Link key={recent.slug} href={`/${recent.slug}`} className="flex gap-3 group">
-                                                <div className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden">
-                                                    {recent.image ? (
-                                                        <Image
-                                                            src={recent.image}
-                                                            alt={recent.title}
-                                                            fill
-                                                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                                            <span className="text-xs text-gray-400">No Img</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-sm font-medium text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
-                                                        {recent.title}
-                                                    </h4>
-                                                    <span className="text-xs text-gray-400 mt-1 block">
-                                                        {formatDate(recent.date)}
-                                                    </span>
-                                                </div>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-                            </aside>
-                        </div>
-                        <script
-                            type="application/ld+json"
-                            dangerouslySetInnerHTML={{
-                                __html: JSON.stringify({
-                                    '@context': 'https://schema.org',
-                                    '@type': 'Article',
-                                    headline: post.title,
-                                    description: post.excerpt,
-                                    image: post.image ? [post.image] : [],
-                                    datePublished: post.date,
-                                    dateModified: post.date,
-                                    author: [{
-                                        '@type': 'Person',
-                                        name: post.author,
-                                        url: 'https://hasandurmus.com'
-                                    }]
-                                })
-                            }}
-                        />
+            <div className="bg-blue-900 text-white">
+                {/* Header / Breadcrumb Area */}
+                <div className="py-8">
+                    <PageContainer>
+                        <Breadcrumb items={[
+                            { label: 'Ana Sayfa', href: '/' },
+                            { label: post.category, href: `/kategori/${post.categorySlug}` },
+                            { label: post.title, href: `/${post.slug}` },
+                        ]} />
                     </PageContainer>
                 </div>
+            </div>
+
+            <div className="bg-gray-50 min-h-screen py-12">
+                <PageContainer>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Main Content */}
+                        <article className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
+                            {/* Featured Image */}
+                            {post.image ? (
+                                <div className="relative h-64 md:h-96 w-full">
+                                    <Image
+                                        src={post.image}
+                                        alt={post.title}
+                                        fill
+                                        className="object-cover"
+                                        priority
+                                    />
+                                </div>
+                            ) : null}
+
+                            <div className="p-6 md:p-8">
+                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
+                                    {post.title}
+                                </h1>
+
+                                <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
+                                    <span className="font-medium text-blue-600 mr-4">{post.author}</span>
+                                    <span className="mr-4">{formatDate(post.date)}</span>
+                                    <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
+                                </div>
+
+                                <div
+                                    className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-800 prose-p:text-gray-600"
+                                    dangerouslySetInnerHTML={{ __html: post.content }}
+                                />
+                            </div>
+                        </article>
+
+                        {/* Sidebar */}
+                        <aside className="lg:col-span-1 space-y-8">
+                            {/* Sidebar content */}
+                            <div className="bg-white p-6 rounded-lg shadow-sm sticky top-4">
+                                <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Son Yazılar</h3>
+                                <div className="flex flex-col gap-4">
+                                    {recentPosts.map((recent) => (
+                                        <Link key={recent.slug} href={`/${recent.slug}`} className="flex gap-3 group">
+                                            <div className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden">
+                                                {recent.image ? (
+                                                    <Image
+                                                        src={recent.image}
+                                                        alt={recent.title}
+                                                        fill
+                                                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                                                        <span className="text-xs text-gray-400">No Img</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
+                                                    {recent.title}
+                                                </h4>
+                                                <span className="text-xs text-gray-400 mt-1 block">
+                                                    {formatDate(recent.date)}
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </PageContainer>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'Article',
+                            headline: post.title,
+                            description: post.excerpt,
+                            image: post.image ? [post.image] : [],
+                            datePublished: post.date,
+                            dateModified: post.date,
+                            author: [{
+                                '@type': 'Person',
+                                name: post.author,
+                                url: 'https://hasandurmus.com'
+                            }]
+                        })
+                    }}
+                />
             </div>
         </div>
     );
