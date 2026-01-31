@@ -39,8 +39,8 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
         {/* Featured Section - Only on Page 1 */}
         {currentPage === 1 && featuredPosts.length > 0 && <FeaturedSection posts={featuredPosts} />}
 
-        {/* Main Content Grid - Reduced spacing (mt-6 instead of mt-12) */}
-        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8 ${currentPage === 1 ? 'mt-6' : 'mt-0'}`}>
+        {/* Main Content Grid - Reduced spacing (mt-4 to be closer to slider) */}
+        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8 ${currentPage === 1 ? 'mt-4' : 'mt-0'}`}>
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2">
             {/* Main Content Box */}
