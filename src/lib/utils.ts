@@ -2,12 +2,15 @@ import { format, parseISO } from 'date-fns';
 import { tr } from 'date-fns/locale';
 
 // Format date to Turkish locale
-export function formatDate(dateString: string): string {
+export function formatDate(date: string | Date | null | undefined): string {
+    if (!date) return '-';
     try {
-        const date = parseISO(dateString);
-        return format(date, 'd MMMM yyyy', { locale: tr });
+        const d = typeof date === 'string' ? parseISO(date) : date;
+        // Check for invalid date
+        if (isNaN(d.getTime())) return '-';
+        return format(d, 'd MMMM yyyy', { locale: tr });
     } catch (error) {
-        return dateString;
+        return '-';
     }
 }
 
