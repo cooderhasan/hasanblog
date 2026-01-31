@@ -6,7 +6,8 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { getPosts, getRecentPosts } from '@/lib/blog';
 import { PrismaClient } from '@prisma/client';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
     const slug = decodeURIComponent(params.slug);
     const prisma = new PrismaClient();
     const category = await prisma.category.findFirst({
