@@ -21,6 +21,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     const [imageUrl, setImageUrl] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [uploadTab, setUploadTab] = useState<'url' | 'upload'>('upload');
+    const [isSourceView, setIsSourceView] = useState(false);
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -238,10 +239,37 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
                 >
                     🖼️ Resim
                 </button>
+                <button
+                    type="button"
+                    onClick={() => setIsSourceView(!isSourceView)}
+                    className={`px-3 py-1.5 rounded text-sm font-medium border flex items-center gap-1 ${isSourceView ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-gray-200 hover:bg-gray-100 text-gray-700'}`}
+                    title="Kaynak Kodu Görüntüle/Düzenle"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+                    </svg>
+                    Kod
+                </button>
             </div>
 
-            {/* Editor Content */}
-            <EditorContent editor={editor} className="bg-white" />
+            {/* Editor Content or Source View */}
+            {isSourceView ? (
+                <textarea
+                    value={content}
+                    onChange={(e) => {
+                        const newContent = e.target.value;
+                        onChange(newContent);
+                        // We don't update editor immediately here to avoid sync issues, 
+                        // the useEffect checks content prop changes anyway.
+                        // But for smoother experience we can try:
+                        editor.commands.setContent(newContent);
+                    }}
+                    className="w-full h-[400px] p-4 font-mono text-sm bg-gray-900 text-gray-100 focus:outline-none resize-y"
+                    spellCheck={false}
+                />
+            ) : (
+                <EditorContent editor={editor} className="bg-white min-h-[400px]" />
+            )}
 
             {/* Link Modal */}
             {showLinkModal && (
