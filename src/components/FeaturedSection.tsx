@@ -41,9 +41,9 @@ export default function FeaturedSection({ posts }: FeaturedSectionProps) {
                                 }`}>
                                 {mainPost.category}
                             </span>
-                            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 leading-tight">
+                            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 leading-tight">
                                 {mainPost.title}
-                            </h2>
+                            </h1>
                             <div className="flex items-center text-gray-300 text-sm gap-4">
                                 <span>{mainPost.author}</span>
                                 <span>•</span>
