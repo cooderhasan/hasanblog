@@ -33,7 +33,7 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
   }
 
   return (
-    <div className="bg-white min-h-screen py-8">
+    <div className="min-h-screen py-8">
       <PageContainer>
 
         {/* Featured Section - Only on Page 1 */}
@@ -43,25 +43,26 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
         <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8 ${currentPage === 1 ? 'mt-6' : 'mt-0'}`}>
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2">
-            {/* Removed "Son Yazılar" Header */}
+            {/* Main Content Box */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+              <div className="flex flex-col gap-6">
+                {mainListPosts.length > 0 ? (
+                  <>
+                    {mainListPosts.map((post) => (
+                      <BlogListItem key={post.slug} post={post} />
+                    ))}
 
-            <div className="flex flex-col gap-6">
-              {mainListPosts.length > 0 ? (
-                <>
-                  {mainListPosts.map((post) => (
-                    <BlogListItem key={post.slug} post={post} />
-                  ))}
-
-                  {/* Pagination */}
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    baseUrl="/"
-                  />
-                </>
-              ) : (
-                <p className="text-gray-500">Bu sayfada yazı bulunmamaktadır.</p>
-              )}
+                    {/* Pagination */}
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      baseUrl="/"
+                    />
+                  </>
+                ) : (
+                  <p className="text-gray-500">Bu sayfada yazı bulunmamaktadır.</p>
+                )}
+              </div>
             </div>
           </div>
 
