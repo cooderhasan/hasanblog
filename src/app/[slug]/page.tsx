@@ -147,75 +147,77 @@ export default async function BlogPostPage(props: any) {
             <div className="bg-gray-50 min-h-screen py-12">
                 <PageContainer>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Main Content */}
-                        <article className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
-                            {/* Featured Image Removed at User Request */}
+                        {/* Main Content Column */}
+                        <div className="lg:col-span-2 space-y-8">
+                            <article className="bg-white rounded-lg shadow-sm overflow-hidden">
+                                {/* Featured Image Removed at User Request */}
 
-                            <div className="p-6 md:p-8">
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
-                                    {post.title}
-                                </h1>
+                                <div className="p-6 md:p-8">
+                                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
+                                        {post.title}
+                                    </h1>
 
-                                <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
-                                    <span className="font-medium text-blue-600 mr-4">{post.author}</span>
-                                    <span className="mr-4">{formatDate(post.date)}</span>
-                                    <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
+                                    <div className="flex items-center text-sm text-gray-500 mb-8 pb-4 border-b">
+                                        <span className="font-medium text-blue-600 mr-4">{post.author}</span>
+                                        <span className="mr-4">{formatDate(post.date)}</span>
+                                        <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
+                                    </div>
+
+                                    <div
+                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900"
+                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                    />
                                 </div>
+                            </article>
 
-                                <div
-                                    className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900"
-                                    dangerouslySetInnerHTML={{ __html: post.content }}
-                                />
-                            </div>
-                        </article>
-
-                        {/* Related Posts */}
-                        {relatedPosts.length > 0 && (
-                            <div className="my-8">
-                                <h3 className="text-xl font-bold text-gray-900 mb-4 px-1">İlginizi Çekebilir</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {relatedPosts.map((rp) => (
-                                        <Link
-                                            key={rp.slug}
-                                            href={`/${rp.slug}`}
-                                            className="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-100"
-                                        >
-                                            <div className="relative h-48 w-full overflow-hidden">
-                                                {rp.image ? (
-                                                    <Image
-                                                        src={rp.image}
-                                                        alt={rp.title}
-                                                        fill
-                                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    />
-                                                ) : (
-                                                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                                        <span className="text-sm">Görsel Yok</span>
+                            {/* Related Posts */}
+                            {relatedPosts.length > 0 && (
+                                <div className="bg-transparent">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-4 px-1">İlginizi Çekebilir</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {relatedPosts.map((rp) => (
+                                            <Link
+                                                key={rp.slug}
+                                                href={`/${rp.slug}`}
+                                                className="group bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-100"
+                                            >
+                                                <div className="relative h-48 w-full overflow-hidden">
+                                                    {rp.image ? (
+                                                        <Image
+                                                            src={rp.image}
+                                                            alt={rp.title}
+                                                            fill
+                                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                                            <span className="text-sm">Görsel Yok</span>
+                                                        </div>
+                                                    )}
+                                                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 shadow-sm">
+                                                        {formatDate(rp.date)}
                                                     </div>
-                                                )}
-                                                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 shadow-sm">
-                                                    {formatDate(rp.date)}
                                                 </div>
-                                            </div>
-                                            <div className="p-4">
-                                                <h4 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
-                                                    {rp.title}
-                                                </h4>
-                                                <p className="text-sm text-gray-600 line-clamp-2">
-                                                    {rp.excerpt || 'İçerik özeti bulunmuyor.'}
-                                                </p>
-                                            </div>
-                                        </Link>
-                                    ))}
+                                                <div className="p-4">
+                                                    <h4 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
+                                                        {rp.title}
+                                                    </h4>
+                                                    <p className="text-sm text-gray-600 line-clamp-2">
+                                                        {rp.excerpt || 'İçerik özeti bulunmuyor.'}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {/* Comments Section */}
-                        <div className="bg-white rounded-lg shadow-sm p-6 md:p-8" id="comments">
-                            <CommentList comments={comments} />
-                            <div className="mt-8 pt-8 border-t border-gray-100">
-                                <CommentForm postId={post.id} />
+                            {/* Comments Section */}
+                            <div className="bg-white rounded-lg shadow-sm p-6 md:p-8" id="comments">
+                                <CommentList comments={comments} />
+                                <div className="mt-8 pt-8 border-t border-gray-100">
+                                    <CommentForm postId={post.id} />
+                                </div>
                             </div>
                         </div>
 
