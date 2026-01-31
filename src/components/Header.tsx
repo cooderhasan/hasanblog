@@ -12,7 +12,7 @@ interface HeaderProps {
     logoHeight?: number;
 }
 
-export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight = 48 }: HeaderProps) {
+export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight = 80 }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
 
@@ -34,12 +34,15 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
                     <div className="flex items-center justify-between w-full lg:w-auto">
                         <Link href="/" className="flex flex-col z-20">
                             {logoUrl ? (
-                                <div className="relative w-auto" style={{ height: `${logoHeight}px`, minWidth: '150px' }}>
+                                <div className="relative">
                                     <Image
                                         src={logoUrl}
                                         alt="Hasan Durmuş"
-                                        fill
-                                        className="object-contain object-left"
+                                        width={0}
+                                        height={0}
+                                        sizes="100vw"
+                                        style={{ width: 'auto', height: `${logoHeight}px` }}
+                                        className="object-contain"
                                         priority
                                         unoptimized={logoUrl.startsWith('/uploads/')}
                                     />
