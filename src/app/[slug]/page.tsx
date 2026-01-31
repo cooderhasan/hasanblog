@@ -163,9 +163,12 @@ export default async function BlogPostPage(props: any) {
                                         <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
                                     </div>
 
+                                    {/* Table of Contents */}
+                                    <TableOfContents toc={toc} />
+
                                     <div
                                         className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900"
-                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                        dangerouslySetInnerHTML={{ __html: htmlWithIds }}
                                     />
                                 </div>
                             </article>
