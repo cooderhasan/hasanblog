@@ -18,7 +18,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
 
     const getLinkClass = (path: string) => {
         const isActive = pathname === path;
-        const baseClass = "px-3 py-1.5 rounded transition-colors block text-center"; // block added for structure, text-center for alignment if needed
+        const baseClass = "px-3 py-1.5 rounded transition-colors block text-center whitespace-nowrap"; // block added for structure, text-center for alignment if needed
         const activeClass = "bg-blue-600 text-white";
         const inactiveClass = "text-gray-700 hover:bg-blue-600 hover:text-white";
 
