@@ -9,17 +9,13 @@ export const metadata = {
 export default function AboutPage() {
     return (
         <div className="bg-white min-h-screen">
-            <div className="bg-blue-900 text-white py-12">
-                <PageContainer>
-                    <div className="mb-4">
-                        <Breadcrumb items={[
-                            { label: 'Ana Sayfa', href: '/' },
-                            { label: 'Hakkımda', href: '/hakkimda' },
-                        ]} />
-                    </div>
-                    <h1 className="text-4xl font-bold mb-4">Hakkımda</h1>
-                </PageContainer>
-            </div>
+            <PageContainer className="pt-8">
+                <Breadcrumb items={[
+                    { label: 'Ana Sayfa', href: '/' },
+                    { label: 'Hakkımda', href: '/hakkimda' },
+                ]} />
+                <h1 className="text-4xl font-bold mt-4 mb-4 text-gray-900">Hakkımda</h1>
+            </PageContainer>
 
             <PageContainer className="py-12">
                 <div className="prose lg:prose-xl max-w-4xl mx-auto">

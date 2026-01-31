@@ -133,17 +133,15 @@ export default async function BlogPostPage(props: any) {
     return (
         <div className="bg-white">
             {/* Simple Header */}
-            <div className="bg-blue-900 text-white">
-                {/* Header / Breadcrumb Area */}
-                <div className="py-8">
-                    <PageContainer>
-                        <Breadcrumb items={[
-                            { label: 'Ana Sayfa', href: '/' },
-                            { label: post.category, href: `/kategori/${post.categorySlug}` },
-                            { label: post.title, href: `/${post.slug}` },
-                        ]} />
-                    </PageContainer>
-                </div>
+            {/* Simple Header / Breadcrumb Area */}
+            <div className="py-4 bg-gray-50">
+                <PageContainer>
+                    <Breadcrumb items={[
+                        { label: 'Ana Sayfa', href: '/' },
+                        { label: post.category, href: `/kategori/${post.categorySlug}` },
+                        { label: post.title, href: `/${post.slug}` },
+                    ]} />
+                </PageContainer>
             </div>
 
             <div className="bg-gray-50 min-h-screen py-12">
