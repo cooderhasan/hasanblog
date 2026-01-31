@@ -89,7 +89,7 @@ export default async function PostsPage(props: {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            {post.category.name}
+                                            {post.category?.name || 'Genel'}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
@@ -104,7 +104,14 @@ export default async function PostsPage(props: {
                                         )}
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-500">
-                                        {format(new Date(post.date), 'd MMM yyyy', { locale: tr })}
+                                        {(() => {
+                                            try {
+                                                const d = new Date(post.date);
+                                                return isNaN(d.getTime()) ? '-' : format(d, 'd MMM yyyy', { locale: tr });
+                                            } catch (e) {
+                                                return '-';
+                                            }
+                                        })()}
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-3">
