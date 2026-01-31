@@ -149,18 +149,7 @@ export default async function BlogPostPage(props: any) {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Main Content */}
                         <article className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
-                            {/* Featured Image */}
-                            {post.image ? (
-                                <div className="relative h-64 md:h-96 w-full">
-                                    <Image
-                                        src={post.image}
-                                        alt={post.title}
-                                        fill
-                                        className="object-cover"
-                                        priority
-                                    />
-                                </div>
-                            ) : null}
+                            {/* Featured Image Removed at User Request */}
 
                             <div className="p-6 md:p-8">
                                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 bg-yellow-100">
