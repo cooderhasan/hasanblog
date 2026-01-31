@@ -95,67 +95,68 @@ export default async function CategoryPage({
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
+                        <div className="bg-white shadow-sm border border-gray-100 p-6 md:p-8">
+                            {/* Posts List */}
+                            <div className="flex flex-col gap-6">
+                                {posts.length > 0 ? (
+                                    posts.map((post) => (
+                                        <BlogListItem key={post.slug} post={post} />
+                                    ))
+                                ) : (
+                                    <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                                        <p className="text-gray-600 text-lg mb-4">
+                                            Bu kategoride henüz yazı bulunmamaktadır.
+                                        </p>
+                                        <Link href="/" className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                            Tüm yazılara dön
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
 
-                        {/* Posts List */}
-                        <div className="flex flex-col gap-6">
-                            {posts.length > 0 ? (
-                                posts.map((post) => (
-                                    <BlogListItem key={post.slug} post={post} />
-                                ))
-                            ) : (
-                                <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                                    <p className="text-gray-600 text-lg mb-4">
-                                        Bu kategoride henüz yazı bulunmamaktadır.
-                                    </p>
-                                    <Link href="/" className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                                        Tüm yazılara dön
-                                    </Link>
+                            {/* Pagination */}
+                            {totalPages > 1 && (
+                                <div className="mt-8 flex justify-center gap-2">
+                                    {/* Previous Page */}
+                                    {page > 1 && (
+                                        <Link
+                                            href={`/kategori/${slug}?page=${page - 1}`}
+                                            className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                        >
+                                            &larr; Önceki
+                                        </Link>
+                                    )}
+
+                                    {/* Page Numbers */}
+                                    {[...Array(totalPages)].map((_, i) => {
+                                        const p = i + 1;
+                                        const isCurrent = p === page;
+                                        return (
+                                            <Link
+                                                key={p}
+                                                href={`/kategori/${slug}?page=${p}`}
+                                                className={`px-4 py-2 border rounded-lg transition ${isCurrent
+                                                    ? 'bg-blue-600 text-white border-blue-600'
+                                                    : 'bg-white border-gray-300 hover:bg-gray-50'
+                                                    }`}
+                                            >
+                                                {p}
+                                            </Link>
+                                        );
+                                    })}
+
+                                    {/* Next Page */}
+                                    {page < totalPages && (
+                                        <Link
+                                            href={`/kategori/${slug}?page=${page + 1}`}
+                                            className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                                        >
+                                            Sonraki &rarr;
+                                        </Link>
+                                    )}
                                 </div>
                             )}
                         </div>
-
-                        {/* Pagination */}
-                        {totalPages > 1 && (
-                            <div className="mt-8 flex justify-center gap-2">
-                                {/* Previous Page */}
-                                {page > 1 && (
-                                    <Link
-                                        href={`/kategori/${slug}?page=${page - 1}`}
-                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                                    >
-                                        &larr; Önceki
-                                    </Link>
-                                )}
-
-                                {/* Page Numbers */}
-                                {[...Array(totalPages)].map((_, i) => {
-                                    const p = i + 1;
-                                    const isCurrent = p === page;
-                                    return (
-                                        <Link
-                                            key={p}
-                                            href={`/kategori/${slug}?page=${p}`}
-                                            className={`px-4 py-2 border rounded-lg transition ${isCurrent
-                                                ? 'bg-blue-600 text-white border-blue-600'
-                                                : 'bg-white border-gray-300 hover:bg-gray-50'
-                                                }`}
-                                        >
-                                            {p}
-                                        </Link>
-                                    );
-                                })}
-
-                                {/* Next Page */}
-                                {page < totalPages && (
-                                    <Link
-                                        href={`/kategori/${slug}?page=${page + 1}`}
-                                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                                    >
-                                        Sonraki &rarr;
-                                    </Link>
-                                )}
-                            </div>
-                        )}
                     </div>
 
                     {/* Sidebar */}
