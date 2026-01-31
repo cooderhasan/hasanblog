@@ -180,6 +180,14 @@ export default async function BlogPostPage(props: any) {
                             </div>
                         </article>
 
+                        {/* Comments Section */}
+                        <div className="bg-white rounded-lg shadow-sm p-6 md:p-8" id="comments">
+                            <CommentList comments={comments} />
+                            <div className="mt-8 pt-8 border-t border-gray-100">
+                                <CommentForm postId={post.id} />
+                            </div>
+                        </div>
+
                         {/* Sidebar */}
                         <aside className="lg:col-span-1 space-y-8">
                             {/* Sidebar content */}
