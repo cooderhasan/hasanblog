@@ -8,57 +8,64 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://hasandurmus.com'),
-  title: {
-    default: "Hasan Durmuş - Blog",
-    template: "%s | Hasan Durmuş"
-  },
-  description: "Hasan Durmuş Blog - E-ticaret, SEO ve Dijital Pazarlama üzerine güncel içerikler ve rehberler.",
-  keywords: ["blog", "e-ticaret", "seo", "dijital pazarlama", "pazaryerleri", "shopify", "amazon fba"],
-  authors: [{ name: "Hasan Durmuş", url: "https://hasandurmus.com" }],
-  creator: "Hasan Durmuş",
-  publisher: "Hasan Durmuş",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  verification: {
-    google: "google-site-verification-placeholder",
-  },
-  openGraph: {
-    type: "website",
-    locale: "tr_TR",
-    url: "https://hasandurmus.com",
-    title: "Hasan Durmuş - Blog",
-    description: "E-ticaret ve dijital pazarlama üzerine uzman görüşleri ve rehberler.",
-    siteName: "Hasan Durmuş Blog",
-    images: [{
-      url: '/og-image.jpg',
-      width: 1200,
-      height: 630,
-      alt: 'Hasan Durmuş Blog',
-    }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Hasan Durmuş - Blog",
-    description: "E-ticaret ve dijital pazarlama üzerine uzman görüşleri.",
-    images: ['/og-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+import prisma from "@/lib/prisma";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "main" },
+  });
+
+  const baseUrl = "https://hasandurmus.com";
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: settings?.metaTitle || "Hasan Durmuş - Blog",
+      template: `%s | ${settings?.siteName || "Hasan Durmuş"}`,
+    },
+    description: settings?.metaDescription || "Hasan Durmuş Blog - E-ticaret, SEO ve Dijital Pazarlama üzerine güncel içerikler ve rehberler.",
+    keywords: settings?.metaKeywords?.split(",") || ["blog", "e-ticaret", "seo", "dijital pazarlama"],
+    authors: [{ name: "Hasan Durmuş", url: baseUrl }],
+    creator: "Hasan Durmuş",
+    publisher: "Hasan Durmuş",
+    icons: {
+      icon: settings?.faviconUrl || "/favicon.ico",
+      shortcut: settings?.faviconUrl || "/favicon.ico",
+      apple: settings?.faviconUrl || "/apple-touch-icon.png",
+    },
+    openGraph: {
+      type: "website",
+      locale: "tr_TR",
+      url: baseUrl,
+      title: settings?.metaTitle || "Hasan Durmuş - Blog",
+      description: settings?.metaDescription || "E-ticaret ve dijital pazarlama üzerine uzman görüşleri.",
+      siteName: settings?.siteName || "Hasan Durmuş Blog",
+      images: [{
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: settings?.siteName || "Hasan Durmuş Blog",
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: settings?.metaTitle || "Hasan Durmuş - Blog",
+      description: settings?.metaDescription || "E-ticaret ve dijital pazarlama üzerine uzman görüşleri.",
+      images: ["/og-image.jpg"],
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    }
-  }
-};
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+  };
+}
 
 import { Toaster } from 'react-hot-toast';
 
