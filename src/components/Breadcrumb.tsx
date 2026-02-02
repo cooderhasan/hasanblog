@@ -31,7 +31,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
             />
 
-            <ol className="flex items-center space-x-2 text-sm text-blue-100 flex-wrap">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500 flex-wrap">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;
 
@@ -39,20 +39,20 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                         <Fragment key={item.href}>
                             <li>
                                 {isLast ? (
-                                    <span className="font-medium text-white" aria-current="page">
+                                    <span className="font-medium text-gray-900" aria-current="page">
                                         {item.label}
                                     </span>
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className="hover:text-white transition-colors"
+                                        className="hover:text-blue-600 transition-colors"
                                     >
                                         {item.label}
                                     </Link>
                                 )}
                             </li>
                             {!isLast && (
-                                <li className="text-blue-300" aria-hidden="true">
+                                <li className="text-gray-400" aria-hidden="true">
                                     /
                                 </li>
                             )}

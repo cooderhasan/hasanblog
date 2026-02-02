@@ -134,7 +134,8 @@ export default async function BlogPostPage(props: any) {
         <div className="bg-white">
             {/* Simple Header */}
             {/* Simple Header / Breadcrumb Area */}
-            <div className="py-4 bg-gray-50">
+            {/* Simple Header / Breadcrumb Area */}
+            <div className="py-2 bg-gray-50">
                 <PageContainer>
                     <Breadcrumb items={[
                         { label: 'Ana Sayfa', href: '/' },
@@ -144,7 +145,7 @@ export default async function BlogPostPage(props: any) {
                 </PageContainer>
             </div>
 
-            <div className="bg-gray-50 min-h-screen py-12">
+            <div className="bg-gray-50 min-h-screen py-6">
                 <PageContainer>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Main Content Column */}
