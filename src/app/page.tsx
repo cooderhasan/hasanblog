@@ -68,7 +68,7 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
 
           {/* Right Column - Sidebar */}
           <div className="lg:col-span-1">
-            <Sidebar recentPosts={sidebarPosts} />
+            <Sidebar recentPosts={sidebarPosts} authorImage={settings?.sidebarAboutImage} />
           </div>
         </div>
 

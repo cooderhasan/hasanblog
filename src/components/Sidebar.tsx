@@ -7,11 +7,12 @@ import Image from 'next/image';
 
 interface SidebarProps {
     recentPosts: BlogPost[];
+    authorImage?: string | null;
 }
 
 type TabType = 'populer' | 'son-yazi' | 'yorumlar' | 'etiketler';
 
-export default function Sidebar({ recentPosts }: SidebarProps) {
+export default function Sidebar({ recentPosts, authorImage }: SidebarProps) {
     const [activeTab, setActiveTab] = useState<TabType>('populer');
 
     // Filter posts for E-Ticaret category specifically
@@ -124,11 +125,19 @@ export default function Sidebar({ recentPosts }: SidebarProps) {
 
             {/* About Me Widget */}
             <div className="bg-white shadow-sm border border-gray-100 p-6 text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg">
-                    {/* Placeholder for Profile Image - using a generic person SVG if no image is available, or user can upload one */}
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
-                        <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                    </div>
+                <div className="relative w-32 h-32 mx-auto mb-4">
+                    {authorImage ? (
+                        <Image
+                            src={authorImage}
+                            alt="Hasan DURMUŞ"
+                            fill
+                            className="object-cover rounded-full border-4 border-white shadow-lg"
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 rounded-full border-4 border-white shadow-lg">
+                            <svg className="w-20 h-20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        </div>
+                    )}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Hasan DURMUŞ</h3>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">

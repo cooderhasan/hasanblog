@@ -151,7 +151,7 @@ export default async function CategoryPage({
 
                     {/* Sidebar */}
                     <div className="lg:col-span-1">
-                        <Sidebar recentPosts={recentPostsForSidebar} />
+                        <Sidebar recentPosts={recentPostsForSidebar} authorImage={(await prisma.siteSettings.findUnique({ where: { id: 'main' } }))?.sidebarAboutImage} />
                     </div>
                 </div>
             </PageContainer>

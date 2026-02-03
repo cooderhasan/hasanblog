@@ -227,38 +227,7 @@ export default async function BlogPostPage(props: any) {
 
                         {/* Sidebar */}
                         <aside className="lg:col-span-1 space-y-8">
-                            {/* Sidebar content */}
-                            <div className="bg-white p-6 rounded-lg shadow-sm sticky top-4">
-                                <h3 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2">Son Yazılar</h3>
-                                <div className="flex flex-col gap-4">
-                                    {recentPosts.map((recent) => (
-                                        <Link key={recent.slug} href={`/${recent.slug}`} className="flex gap-3 group">
-                                            <div className="relative w-16 h-16 shrink-0 rounded-md overflow-hidden">
-                                                {recent.image ? (
-                                                    <Image
-                                                        src={recent.image}
-                                                        alt={recent.title}
-                                                        fill
-                                                        className="object-cover group-hover:scale-110 transition-transform duration-300"
-                                                    />
-                                                ) : (
-                                                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                                        <span className="text-xs text-gray-400">No Img</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div>
-                                                <h4 className="text-sm font-medium text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2">
-                                                    {recent.title}
-                                                </h4>
-                                                <span className="text-xs text-gray-400 mt-1 block">
-                                                    {formatDate(recent.date)}
-                                                </span>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
+                            <Sidebar recentPosts={recentPosts} authorImage={(await prisma.siteSettings.findUnique({ where: { id: 'main' } }))?.sidebarAboutImage} />
                         </aside>
                     </div>
                 </PageContainer>

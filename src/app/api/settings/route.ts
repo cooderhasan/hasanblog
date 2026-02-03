@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
                 postsPerPage: parseInt(data.postsPerPage) || 10,
                 layoutWidth: data.layoutWidth || 'max-w-6xl',
                 logoHeight: parseInt(data.logoHeight) || 48,
+                sidebarAboutImage: data.sidebarAboutImage,
             },
             create: {
                 id: 'main',
@@ -66,6 +67,7 @@ export async function POST(request: NextRequest) {
                 postsPerPage: parseInt(data.postsPerPage) || 10,
                 layoutWidth: data.layoutWidth || 'max-w-6xl',
                 logoHeight: parseInt(data.logoHeight) || 48,
+                sidebarAboutImage: data.sidebarAboutImage,
             }
         });
 

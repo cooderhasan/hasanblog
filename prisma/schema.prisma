@@ -74,6 +74,7 @@ model SiteSettings {
   postsPerPage       Int     @default(10)
   layoutWidth        String  @default("max-w-6xl")
   logoHeight         Int     @default(48)
+  sidebarAboutImage  String?
   
   // SEO
   metaTitle          String?
