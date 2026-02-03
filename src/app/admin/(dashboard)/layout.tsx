@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/actions';
-import { Toaster } from 'react-hot-toast';
+import { handleSignOut } from '@/app/actions';
 
 export default async function AdminLayout({
     children,
@@ -17,12 +17,6 @@ export default async function AdminLayout({
 
     return (
         <div className="flex min-h-screen bg-gray-100 text-gray-900" style={{ colorScheme: 'light' }}>
-            <Toaster position="top-right" toastOptions={{
-                duration: 4000,
-                style: { background: '#333', color: '#fff' },
-                success: { style: { background: '#10b981' } },
-                error: { style: { background: '#ef4444' } },
-            }} />
 
             {/* Sidebar */}
             <aside className="w-64 bg-slate-900 text-white flex flex-col">
