@@ -60,6 +60,9 @@ export async function generateMetadata(props: any) {
                 authors: [post.author],
                 images: post.image ? [post.image] : [],
             },
+            alternates: {
+                canonical: `https://hasandurmus.com/${post.slug}`,
+            },
         };
     } catch (error) {
         console.error('Error generating metadata:', error);
@@ -290,20 +293,46 @@ export default async function BlogPostPage(props: any) {
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
-                        __html: JSON.stringify({
-                            '@context': 'https://schema.org',
-                            '@type': 'Article',
-                            headline: post.title,
-                            description: post.excerpt,
-                            image: post.image ? [post.image] : [],
-                            datePublished: post.date,
-                            dateModified: post.date,
-                            author: [{
-                                '@type': 'Person',
-                                name: post.author,
-                                url: 'https://hasandurmus.com'
-                            }]
-                        })
+                        __html: JSON.stringify([
+                            {
+                                '@context': 'https://schema.org',
+                                '@type': 'Article',
+                                headline: post.title,
+                                description: post.excerpt,
+                                image: post.image ? [post.image] : [],
+                                datePublished: post.date,
+                                dateModified: post.date,
+                                author: [{
+                                    '@type': 'Person',
+                                    name: post.author,
+                                    url: 'https://hasandurmus.com'
+                                }]
+                            },
+                            {
+                                '@context': 'https://schema.org',
+                                '@type': 'BreadcrumbList',
+                                itemListElement: [
+                                    {
+                                        '@type': 'ListItem',
+                                        position: 1,
+                                        name: 'Ana Sayfa',
+                                        item: 'https://hasandurmus.com'
+                                    },
+                                    {
+                                        '@type': 'ListItem',
+                                        position: 2,
+                                        name: post.category,
+                                        item: `https://hasandurmus.com/kategori/${post.categorySlug}`
+                                    },
+                                    {
+                                        '@type': 'ListItem',
+                                        position: 3,
+                                        name: post.title,
+                                        item: `https://hasandurmus.com/${post.slug}`
+                                    }
+                                ]
+                            }
+                        ])
                     }}
                 />
             </div>

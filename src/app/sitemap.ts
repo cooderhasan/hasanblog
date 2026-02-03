@@ -1,10 +1,9 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
-import { PrismaClient } from '@prisma/client'
+import prisma from '@/lib/prisma'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://hasandurmus.com'
-    const prisma = new PrismaClient()
 
     // Static routes
     const routes = [
@@ -12,6 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '/hakkimda',
         '/iletisim',
         '/hizmetler',
+        '/site-haritasi',
+        '/gizlilik-politikasi',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
