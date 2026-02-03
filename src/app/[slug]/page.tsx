@@ -104,7 +104,7 @@ export default async function BlogPostPage(props: any) {
     const allPosts = await getAllPosts();
     const relatedPosts = allPosts
         .filter(p => p.category === post.category && p.slug !== post.slug)
-        .slice(0, 3);
+        .slice(0, 4);
 
 
     const recentPosts = await getRecentPosts(10); // Fetch for Sidebar
@@ -130,10 +130,22 @@ export default async function BlogPostPage(props: any) {
 
     console.log('[BlogPostPage] Post ID for comments:', post.id, typeof post.id);
 
+    // Split content to insert TOC after first paragraph
+    let part1 = '';
+    let part2 = htmlWithIds;
+
+    // Find first paragraph closing tag
+    const splitIndex = htmlWithIds.indexOf('</p>');
+    if (splitIndex !== -1) {
+        part1 = htmlWithIds.substring(0, splitIndex + 4); // Include </p>
+        part2 = htmlWithIds.substring(splitIndex + 4);
+    }
+
+    // console.log('[BlogPostPage] Split content:', { splitIndex, part1Length: part1.length, part2Length: part2.length });
+
     return (
         <div className="bg-white">
             {/* Simple Header */}
-            {/* Simple Header / Breadcrumb Area */}
             {/* Simple Header / Breadcrumb Area */}
             <div className="py-2 bg-gray-50">
                 <PageContainer>
@@ -164,12 +176,19 @@ export default async function BlogPostPage(props: any) {
                                         <span className="bg-gray-100 px-2 py-1 rounded-md">{post.category}</span>
                                     </div>
 
-                                    {/* Table of Contents */}
-                                    <TableOfContents toc={toc} />
-
+                                    {/* Part 1: Intro (First Paragraph) */}
                                     <div
-                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900"
-                                        dangerouslySetInnerHTML={{ __html: htmlWithIds }}
+                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900 mb-6"
+                                        dangerouslySetInnerHTML={{ __html: part1 }}
+                                    />
+
+                                    {/* Table of Contents (Inserted here) */}
+                                    {toc.length > 0 && <TableOfContents toc={toc} />}
+
+                                    {/* Part 2: Rest of Content */}
+                                    <div
+                                        className="prose prose-lg max-w-none prose-blue prose-headings:text-gray-900 prose-p:text-gray-800 prose-strong:text-gray-900 prose-li:text-gray-800 text-gray-900 mt-6"
+                                        dangerouslySetInnerHTML={{ __html: part2 }}
                                     />
                                 </div>
                             </article>
@@ -177,7 +196,7 @@ export default async function BlogPostPage(props: any) {
                             {/* Related Posts */}
                             {relatedPosts.length > 0 && (
                                 <div className="bg-transparent">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-4 px-1">İlginizi Çekebilir</h3>
+                                    <h3 className="text-xl font-bold text-gray-900 mb-4 px-1">Benzer Yazılar</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         {relatedPosts.map((rp) => (
                                             <Link
