@@ -74,22 +74,14 @@ export default async function CategoryPage({
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Header */}
-            <PageContainer className="pt-8 pb-4">
+            <PageContainer className="py-2">
                 <Breadcrumb items={[
                     { label: 'Ana Sayfa', href: '/' },
                     { label: categoryName, href: `/kategori/${slug}` },
                 ]} />
-                <div className="mt-4 mb-8">
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                        {categoryName} Yazıları
-                    </h1>
-                    <p className="text-gray-500">
-                        Bu kategoride toplam {totalPosts} yazı listeleniyor
-                    </p>
-                </div>
             </PageContainer>
 
-            <PageContainer className="py-8">
+            <PageContainer className="py-4">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
                     <div className="lg:col-span-2">
