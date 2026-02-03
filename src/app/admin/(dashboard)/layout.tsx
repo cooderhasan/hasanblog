@@ -2,7 +2,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { handleSignOut } from '@/app/actions';
-import { handleSignOut } from '@/app/actions';
+
 
 export default async function AdminLayout({
     children,
