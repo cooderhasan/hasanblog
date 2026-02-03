@@ -26,7 +26,7 @@ export default function Header({ logoUrl, layoutWidth = 'max-w-6xl', logoHeight 
     };
 
     return (
-        <header className="bg-white border-b-2 border-green-500 relative">
+        <header className="bg-white relative">
             <nav className={`${layoutWidth} mx-auto px-4 py-4`}>
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
 
