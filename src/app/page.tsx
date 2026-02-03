@@ -33,7 +33,7 @@ export default async function Home(props: { searchParams?: Promise<{ page?: stri
   }
 
   return (
-    <div className="min-h-screen pt-2 pb-8">
+    <div className="min-h-screen pt-6 pb-8">
       <PageContainer>
 
         {/* Featured Section - Only on Page 1 */}
