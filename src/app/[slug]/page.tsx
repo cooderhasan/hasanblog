@@ -34,6 +34,15 @@ export async function generateMetadata(props: any) {
         const post = await getPostBySlug(slug);
 
         if (!post) {
+            // Try to find a static page
+            const page = await prisma.page.findUnique({ where: { slug } });
+            if (page && page.isActive) {
+                return {
+                    title: `${page.title} - Hasan Durmuş`,
+                    description: page.metaDescription || `${page.title} sayfası.`,
+                };
+            }
+
             return {
                 title: 'Not Found',
                 description: 'The page you are looking for does not exist.',
@@ -79,6 +88,34 @@ export default async function BlogPostPage(props: any) {
     }
 
     if (!post) {
+        // Try to find a static page
+        const page = await prisma.page.findUnique({ where: { slug } });
+
+        if (page && page.isActive) {
+            const { html: pageContentHtml } = addHeadingIds(page.content);
+
+            return (
+                <div className="bg-gray-50 min-h-screen">
+                    <PageContainer className="py-2">
+                        <Breadcrumb items={[
+                            { label: 'Ana Sayfa', href: '/' },
+                            { label: page.title, href: `/${page.slug}` },
+                        ]} />
+                    </PageContainer>
+
+                    <PageContainer className="py-8">
+                        <div className="bg-white rounded-lg shadow-sm p-8 max-w-4xl mx-auto">
+                            <h1 className="text-3xl font-bold text-gray-900 mb-6 border-b pb-4">{page.title}</h1>
+                            <div
+                                className="prose prose-lg max-w-none prose-blue text-gray-800"
+                                dangerouslySetInnerHTML={{ __html: pageContentHtml }}
+                            />
+                        </div>
+                    </PageContainer>
+                </div>
+            );
+        }
+
         notFound();
     }
 

@@ -85,7 +85,7 @@ export default async function Footer({ layoutWidth = 'max-w-6xl' }: { layoutWidt
                             <li><Link href="/hizmetler" className="hover:text-white transition-colors">Hizmetler</Link></li>
                             <li><Link href="/hakkimda" className="hover:text-white transition-colors">Hakkımda</Link></li>
                             <li><Link href="/iletisim" className="hover:text-white transition-colors">İletişim</Link></li>
-                            <li><Link href="/gizlilik" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
+                            <li><Link href="/gizlilik-politikasi" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
                             <li><Link href="/site-haritasi" className="hover:text-white transition-colors">Site Haritası</Link></li>
                         </ul>
                     </nav>
