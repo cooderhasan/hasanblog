@@ -9,21 +9,17 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <div className="bg-white min-h-screen">
-            <div className="bg-blue-900 text-white py-12">
-                <PageContainer>
-                    <div className="mb-4">
-                        <Breadcrumb items={[
-                            { label: 'Ana Sayfa', href: '/' },
-                            { label: 'İletişim', href: '/iletisim' },
-                        ]} />
-                    </div>
-                    <h1 className="text-4xl font-bold mb-4">İletişim</h1>
-                </PageContainer>
-            </div>
+        <div className="bg-gray-50 min-h-screen">
+            <PageContainer className="py-2">
+                <Breadcrumb items={[
+                    { label: 'Ana Sayfa', href: '/' },
+                    { label: 'İletişim', href: '/iletisim' },
+                ]} />
+            </PageContainer>
 
-            <PageContainer className="py-12">
+            <PageContainer className="py-4">
                 <div className="max-w-2xl mx-auto">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">İletişim</h1>
                     <p className="text-lg text-gray-700 mb-8 text-center">
                         Projeleriniz veya danışmanlık talepleriniz için aşağıdaki formu doldurarak bana ulaşabilirsiniz.
                     </p>

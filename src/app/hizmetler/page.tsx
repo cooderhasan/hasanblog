@@ -9,20 +9,16 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
     return (
-        <div className="bg-white min-h-screen">
-            <div className="bg-blue-900 text-white py-12">
-                <PageContainer>
-                    <div className="mb-4">
-                        <Breadcrumb items={[
-                            { label: 'Ana Sayfa', href: '/' },
-                            { label: 'Hizmetler', href: '/hizmetler' },
-                        ]} />
-                    </div>
-                    <h1 className="text-4xl font-bold mb-4">Hizmetler</h1>
-                </PageContainer>
-            </div>
+        <div className="bg-gray-50 min-h-screen">
+            <PageContainer className="py-2">
+                <Breadcrumb items={[
+                    { label: 'Ana Sayfa', href: '/' },
+                    { label: 'Hizmetler', href: '/hizmetler' },
+                ]} />
+            </PageContainer>
 
-            <PageContainer className="py-12">
+            <PageContainer className="py-4">
+                <h1 className="text-3xl font-bold text-gray-900 mb-8">Hizmetler</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {/* Service 1 */}
                     <div className="p-6 border rounded-lg hover:shadow-lg transition-shadow">
