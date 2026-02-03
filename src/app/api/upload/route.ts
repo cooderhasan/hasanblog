@@ -12,9 +12,18 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate file type
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        const allowedTypes = [
+            'image/jpeg', 'image/png', 'image/webp', 'image/gif',
+            'application/pdf',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // xlsx
+            'application/msword', // doc
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
+            'application/zip',
+            'application/x-zip-compressed'
+        ];
         if (!allowedTypes.includes(file.type)) {
-            return NextResponse.json({ error: 'Invalid file type. Allowed: JPEG, PNG, WebP, GIF' }, { status: 400 });
+            return NextResponse.json({ error: 'Dosya türü desteklenmiyor. İzin verilenler: Resimler ve PDF, Excel, Word, Zip dosyaları.' }, { status: 400 });
         }
 
         // Validate file size (max 5MB)

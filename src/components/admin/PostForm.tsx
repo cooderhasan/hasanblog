@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import toast from 'react-hot-toast';
 import ImageUpload from './ImageUpload';
+import FileUpload from './FileUpload';
 
 const RichTextEditor = dynamic(() => import('./RichTextEditor'), { ssr: false });
 
@@ -241,6 +242,9 @@ export default function PostForm({ categories, post }: PostFormProps) {
                 </label>
                 <ImageUpload value={image} onChange={setImage} />
             </div>
+
+            {/* File Upload Helper */}
+            <FileUpload />
 
             {/* Rich Text Content */}
             <div className="space-y-2">
