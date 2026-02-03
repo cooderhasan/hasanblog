@@ -102,7 +102,7 @@ export async function updatePost(id: string, formData: FormData) {
     let isSuccess = false;
 
     try {
-        await prisma.post.update({
+        const updatedPost = await prisma.post.update({
             where: { id },
             data: {
                 title,
@@ -117,6 +117,7 @@ export async function updatePost(id: string, formData: FormData) {
 
         revalidatePath('/admin/posts');
         revalidatePath('/');
+        revalidatePath(`/${updatedPost.slug}`);
         isSuccess = true;
     } catch (error) {
         console.error('Update Post Error:', error);
