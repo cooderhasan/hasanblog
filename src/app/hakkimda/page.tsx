@@ -40,15 +40,12 @@ export default async function AboutPage() {
     return (
         <div className="bg-gray-50 min-h-screen">
             {/* Header / Breadcrumb */}
-            <div className="bg-white border-b border-gray-100">
-                <PageContainer className="py-8">
-                    <Breadcrumb items={[
-                        { label: 'Ana Sayfa', href: '/' },
-                        { label: 'Hakkımda', href: '/hakkimda' },
-                    ]} />
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-6">{page?.title || 'Hakkımda'}</h1>
-                </PageContainer>
-            </div>
+            <PageContainer className="py-2">
+                <Breadcrumb items={[
+                    { label: 'Ana Sayfa', href: '/' },
+                    { label: 'Hakkımda', href: '/hakkimda' },
+                ]} />
+            </PageContainer>
 
             {/* Main Content Area */}
             <PageContainer className="py-12">
