@@ -22,6 +22,21 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'hasandurmus.com',
+          },
+        ],
+        destination: 'https://www.hasandurmus.com/:path*',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 export default nextConfig;
