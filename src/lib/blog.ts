@@ -3,8 +3,37 @@ import { BlogPost } from '@/types/blog';
 import readingTime from 'reading-time';
 import { cache } from 'react';
 
+// Helper to fix image paths and content URLs on the fly
+const fixImageData = (post: any) => {
+    let image = post.image || null;
+    let content = post.content || '';
+
+    // Fix featured image path
+    if (image && image.startsWith('/images/blog/')) {
+        const filename = image.split('/').pop()?.split('.')[0] || '';
+        // Note: For now we try to find it in the wp-imports folder logic if we had fs access, 
+        // but here we just remap it to the most likely matching pattern if it's broken.
+        // Given our earlier analysis, we know these maps to /uploads/wp-imports/
+        // A more robust way is to just assume the filename exists in wp-imports.
+        image = image.replace('/images/blog/', '/uploads/wp-imports/');
+        // Extensions might differ (.jpg -> .webp), we handle this by just mapping the prefix.
+        // But since we can't do readdir here easily without making it async, 
+        // we'll rely on the fact that some files were already moved.
+    }
+
+    // Fix hardcoded URLs in content
+    const wpUrlRegex = /https?:\/\/(?:blog\.)?hasandurmus\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//g;
+    content = content.replace(wpUrlRegex, '/uploads/wp-imports/');
+
+    // Also fix any leftover /images/blog/ in the content
+    content = content.replace(/\/images\/blog\//g, '/uploads/wp-imports/');
+
+    return { image, content };
+};
+
 // Helper to convert DB Post to BlogPost type
 const convertPostToBlogType = (post: any): BlogPost => {
+    const { image, content } = fixImageData(post);
     return {
         id: post.id,
         slug: post.slug,
@@ -13,10 +42,10 @@ const convertPostToBlogType = (post: any): BlogPost => {
         excerpt: post.excerpt || '',
         category: post.category?.name || 'Genel',
         categorySlug: post.category?.slug || 'genel',
-        image: post.image || null,
+        image: image,
         author: post.author?.name || 'Hasan Durmuş',
-        content: post.content,
-        readingTime: readingTime(post.content).text,
+        content: content,
+        readingTime: readingTime(content).text,
     };
 };
 
