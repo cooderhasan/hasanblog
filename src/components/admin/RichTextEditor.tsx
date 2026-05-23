@@ -19,6 +19,7 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
     const [showImageModal, setShowImageModal] = useState(false);
     const [linkUrl, setLinkUrl] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [imageAlt, setImageAlt] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [uploadTab, setUploadTab] = useState<'url' | 'upload'>('upload');
     const [isSourceView, setIsSourceView] = useState(false);
@@ -118,15 +119,17 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
 
     const addImage = () => {
         setImageUrl('');
+        setImageAlt('');
         setShowImageModal(true);
     };
 
     const confirmImage = () => {
         if (imageUrl) {
-            editor.chain().focus().setImage({ src: imageUrl }).run();
+            editor.chain().focus().setImage({ src: imageUrl, alt: imageAlt }).run();
         }
         setShowImageModal(false);
         setImageUrl('');
+        setImageAlt('');
     };
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -410,6 +413,22 @@ export default function RichTextEditor({ content, onChange, placeholder }: RichT
                                 )}
                             </div>
                         )}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Alt Etiketi (SEO İçin Açıklama)</label>
+                            <input
+                                type="text"
+                                value={imageAlt}
+                                onChange={(e) => setImageAlt(e.target.value)}
+                                placeholder="Örn: E-ticarete Başlarken Dikkat Edilmesi Gerekenler"
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        confirmImage();
+                                    }
+                                }}
+                            />
+                        </div>
                         <div className="flex gap-2 justify-end">
                             <button
                                 type="button"
