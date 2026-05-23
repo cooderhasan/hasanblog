@@ -114,6 +114,7 @@ interface GetPostsOptions {
     page?: number;
     limit?: number;
     categorySlug?: string;
+    query?: string;
 }
 
 interface GetPostsResult {
@@ -122,7 +123,7 @@ interface GetPostsResult {
     totalPosts: number;
 }
 
-export async function getPosts({ page = 1, limit = 10, categorySlug }: GetPostsOptions): Promise<GetPostsResult> {
+export async function getPosts({ page = 1, limit = 10, categorySlug, query }: GetPostsOptions): Promise<GetPostsResult> {
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -131,6 +132,26 @@ export async function getPosts({ page = 1, limit = 10, categorySlug }: GetPostsO
             { category: { name: { equals: categorySlug, mode: 'insensitive' } } },
             { category: { slug: { equals: categorySlug, mode: 'insensitive' } } }
         ];
+    }
+
+    if (query) {
+        const queryFilter = {
+            OR: [
+                { title: { contains: query, mode: 'insensitive' } },
+                { content: { contains: query, mode: 'insensitive' } },
+                { excerpt: { contains: query, mode: 'insensitive' } }
+            ]
+        };
+        
+        if (where.OR) {
+            where.AND = [
+                { OR: where.OR },
+                queryFilter
+            ];
+            delete where.OR;
+        } else {
+            where.OR = queryFilter.OR;
+        }
     }
 
     const [posts, totalPosts] = await Promise.all([
